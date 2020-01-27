@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>新建分类</h1>
+    <h1>{{id? '编辑': '新建'}}分类</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="名称" >
         <el-input placeholder="请输入内容" v-model="model.name"></el-input>
@@ -14,6 +14,9 @@
 
 <script>
 export default {
+  props: {
+    id: {}
+  },
   data () {
     return {
       model: {}
@@ -23,14 +26,32 @@ export default {
     async save() {
       // console.log('1')
       // this.$http.post('categories', this.model).then()
-      // const res = await this.$http.post('categories', this.model)
-      await this.$http.post('categories', this.model)
+      let res
+      if (this.id) {
+        res = await this.$http.put(`/categories/${this.id}`, this.model)
+        res
+      } else {
+        // this.model被axios转化成req.body发出去了，后端的express会接收到并存入mongodb
+        res = await this.$http.post('categories', this.model)
+        res
+      }
+
+      // await this.$http.post('categories', this.model)
       this.$router.push('/categories/list')
       this.$message({
         type: 'success',
         message: '保存成功'
       })
+    },
+    async fetch () {
+      const res = await this.$http.get(`/categories/${this.id}`)
+      console.log(res)
+      this.model = res.data
     }
+  },
+  created () {
+    // id是mongodb存数据时自动添加的
+    this.id && this.fetch()
   }
 }
 </script>
