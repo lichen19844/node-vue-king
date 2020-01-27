@@ -1,14 +1,14 @@
-// 导出一个函数方法
+// 小技巧，直接导出一个函数方法
 module.exports = app => {
   const express = require('express')
-  // express的子路由
+  // express的子路由，用于增删改查
   const router = express.Router()
   const Category = require('../../models/Category')
   // 加一个post方法，接口地址是/categories，async函数是写一些执行东西
   router.post('/categories', async (req, res) => {
     // 使用数据库及其模型，使用Category.create方法创建数据，数据来源是客户端提交过来的数据,存进Mongodb
     const model = await Category.create(req.body)
-    // 发回给客户端（但是客户端在哪里接收它呢？），让客户端知道数据库模型Category创建完成和创建的数据
+    // 发回给客户端（但是客户端在哪里接收它呢？可以在rest client插件里看到返回），让客户端知道数据库模型Category创建完成和创建的数据
     res.send(model)
   })
   app.use('/admin/api', router)
