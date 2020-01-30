@@ -2,6 +2,16 @@
   <div class="about">
     <h1>{{id? '编辑': '新建'}}分类</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
+      <el-form-item label="上级分类" >
+        <el-select placeholder="请选择" v-model="model.parent" style="width: 620px">
+          <el-option
+            v-for="item of parents"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="名称" >
         <el-input placeholder="请输入内容" v-model="model.name"></el-input>
       </el-form-item>
@@ -19,7 +29,8 @@ export default {
   },
   data () {
     return {
-      model: {}
+      model: {},
+      parents: []
     }
   },
   methods: {
@@ -28,6 +39,7 @@ export default {
       // this.$http.post('categories', this.model).then()
       let res
       if (this.id) {
+        console.log('this.id is ', this.id)
         res = await this.$http.put(`/categories/${this.id}`, this.model)
         res
       } else {
@@ -45,11 +57,17 @@ export default {
     },
     async fetch () {
       const res = await this.$http.get(`/categories/${this.id}`)
-      console.log(res)
+      console.log('res is ', res)
       this.model = res.data
+    },
+    async fetchParents () {
+      const res = await this.$http.get(`/categories`)
+      this.parents = res.data
+      console.log('this.parents is ', this.parents)
     }
   },
   created () {
+    this.fetchParents()
     // id是mongodb存数据时自动添加的
     this.id && this.fetch()
   }

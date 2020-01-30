@@ -32,7 +32,7 @@ export default {
     async fetch () {
       const res = await this.$http.get('/categories')
       this.items = res.data
-      console.log(this.items)
+      console.log('this.items is ', this.items)
     },
     async remove (row) {
       this.$confirm(`是否确定要删除分类？"${row.name}"`, '提示', {

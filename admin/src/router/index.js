@@ -16,6 +16,7 @@ const routes = [
     component: Main,
     children: [
       {path: '/categories/create', component: CategoryEdit},
+      // 能够将id传入组件页面中，组件通过props接受
       {path: '/categories/edit/:id', component: CategoryEdit, props: true},
       {path: 'categories/list', component: CategoryList}
     ]
