@@ -10,7 +10,7 @@
         fixed="right"
         label="操作"
         width="180">
-        <!-- <template> -->
+        
         <template v-slot="scope">
           <!-- {{scope.row}} -->
           <el-button type="text" size="small" @click="$router.push(`/categories/edit/${scope.row._id}`)">编辑</el-button>

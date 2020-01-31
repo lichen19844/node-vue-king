@@ -39,7 +39,8 @@ export default {
       // this.$http.post('categories', this.model).then()
       let res
       if (this.id) {
-        console.log('this.id is ', this.id)
+        console.log('this.id and $route.params.id ', this.id, this.$route.params.id)
+        console.log('this.model is ', this.model)
         res = await this.$http.put(`/categories/${this.id}`, this.model)
         res
       } else {
@@ -55,6 +56,7 @@ export default {
         message: '保存成功'
       })
     },
+    // 进入编辑页面时能够让输入框内显示之前的值
     async fetch () {
       const res = await this.$http.get(`/categories/${this.id}`)
       console.log('res is ', res)

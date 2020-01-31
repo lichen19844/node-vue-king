@@ -14,7 +14,7 @@ module.exports = app => {
   })
 
   router.put('/categories/:id', async (req, res) => {
-    console.log('req.body is 1', req.body)
+    console.log('req.body is ', req.body)
     const model = await Category.findByIdAndUpdate(req.params.id, req.body)
     res.send(model)
   })
