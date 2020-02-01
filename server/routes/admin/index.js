@@ -3,12 +3,24 @@ module.exports = app => {
   const express = require('express')
   // express的子路由，用于增删改查
   const router = express.Router()
+  /*
+  Category 就是 mongoose.model('Category', schema)  即
+  
+  mongoose.model('Category', new mongoose.Schema({
+    name: { type: String },
+    parent: { type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }
+  })).create({ parent: xxxxid, name: xxxname })
+
+	最后返回的数据结构如下：
+  { _id: xxxnewid, name: xxxname, parent: xxxxid }
+  */
   const Category = require('../../models/Category')
 
   // 加一个post方法，接口地址是/categories，async函数是写一些执行东西，比如把数据存进数据库
   router.post('/categories', async (req, res) => {
     // 使用数据库及其模型，使用Category.create方法创建数据，数据来源是客户端submit提交过来的数据,存进Mongodb
     const model = await Category.create(req.body)
+    console.log(model)
     // 发回给前端客户端（但是客户端在哪里接收它呢？可以在rest client插件里看到返回），让客户端知道数据库模型Category创建完成和创建的数据
     res.send(model)
   })
@@ -16,7 +28,9 @@ module.exports = app => {
   router.put('/categories/:id', async (req, res) => {
     console.log('req.body is ', req.body)
     const model = await Category.findByIdAndUpdate(req.params.id, req.body)
-    res.send(model)
+    // res.send(model)
+    model
+    res.send('model')
   })
 
   router.delete('/categories/:id', async (req, res) => {
@@ -27,7 +41,8 @@ module.exports = app => {
   })
 
   router.get('/categories', async (req, res) => {
-    const items = await Category.find().limit(10)
+    // const items = await Category.find().limit(10)
+    const items = await Category.find().populate('parent').limit(10)
     // 发送给前端客户端
     res.send(items)
   })

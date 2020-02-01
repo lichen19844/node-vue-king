@@ -1,0 +1,22 @@
+@uri = http://localhost:3000/admin/api/
+###
+GET {{uri}}categories
+###
+GET {{uri}}categories/5e2e8515dd730715edebde78
+###
+POST {{uri}}categories
+Content-Type: application/json
+
+{
+  "name": "产品6",
+  "parent": "5e2e8515dd730715edebde78"
+}
+###
+PUT {{uri}}categories/5e2e8515dd730715edebde78
+Content-Type: application/json
+
+{
+  "name": "heross"
+}
+###
+DELETE {{uri}}categories/5e34eda2e708250f9270c671

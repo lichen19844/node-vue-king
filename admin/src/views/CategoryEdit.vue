@@ -3,7 +3,7 @@
     <h1>{{id? '编辑': '新建'}}分类</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="上级分类" >
-        <el-select placeholder="请选择" v-model="model.parent" style="width: 620px">
+        <el-select placeholder="请选择" v-model="model.parent" style="width: 100%">
           <el-option
             v-for="item of parents"
             :key="item._id"
@@ -35,12 +35,10 @@ export default {
   },
   methods: {
     async save() {
-      // console.log('1')
       // this.$http.post('categories', this.model).then()
       let res
       if (this.id) {
         console.log('this.id and $route.params.id ', this.id, this.$route.params.id)
-        console.log('this.model is ', this.model)
         res = await this.$http.put(`/categories/${this.id}`, this.model)
         res
       } else {
