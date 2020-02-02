@@ -40,11 +40,11 @@ export default {
       let res
       if (this.id) {
         console.log('this.id and $route.params.id ', this.id, this.$route.params.id)
-        res = await this.$http.put(`/categories/${this.id}`, this.model)
+        res = await this.$http.put(`rest/categories/${this.id}`, this.model)
         res
       } else {
         // this.model被axios转化成req.body发出去了，后端的express会接收到并存入mongodb
-        res = await this.$http.post('categories', this.model)
+        res = await this.$http.post('rest/categories', this.model)
         res
       }
       this.$router.push('/categories/list')
@@ -55,13 +55,13 @@ export default {
     },
     // 进入编辑页面时能够让输入框内显示之前的值
     async fetch () {
-      const res = await this.$http.get(`/categories/${this.id}`)
+      const res = await this.$http.get(`rest/categories/${this.id}`)
       console.log('res is ', res)
       this.model = res.data
     },
     // 拿到列表页面所有数据
     async fetchParents () {
-      const res = await this.$http.get(`/categories`)
+      const res = await this.$http.get(`rest/categories`)
       this.parents = res.data
       console.log('this.parents is ', this.parents)
     }
