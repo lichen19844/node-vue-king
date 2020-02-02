@@ -27,6 +27,7 @@ module.exports = app => {
 
   router.put('/categories/:id', async (req, res) => {
     console.log('req.body is ', req.body)
+    // req.params.id能拿到/categories/:id接到的id值
     const model = await Category.findByIdAndUpdate(req.params.id, req.body)
     // res.send(model)
     model

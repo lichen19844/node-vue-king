@@ -35,6 +35,7 @@ export default {
       console.log('this.items is ', this.items)
     },
     async remove (row) {
+      // $confirm 是element提供的
       this.$confirm(`是否确定要删除分类？"${row.name}"`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

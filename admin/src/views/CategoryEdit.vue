@@ -13,6 +13,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="名称" >
+        <!-- input随写随存入model -->
         <el-input placeholder="请输入内容" v-model="model.name"></el-input>
       </el-form-item>
       <el-form-item>
@@ -46,8 +47,6 @@ export default {
         res = await this.$http.post('categories', this.model)
         res
       }
-
-      // await this.$http.post('categories', this.model)
       this.$router.push('/categories/list')
       this.$message({
         type: 'success',
@@ -60,6 +59,7 @@ export default {
       console.log('res is ', res)
       this.model = res.data
     },
+    // 拿到列表页面所有数据
     async fetchParents () {
       const res = await this.$http.get(`/categories`)
       this.parents = res.data
