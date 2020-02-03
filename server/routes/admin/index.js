@@ -75,4 +75,16 @@ module.exports = app => {
     console.log('req is contain Model ', req.Model.modelName)
     next()
   } ,router)
+
+  const multer = require('multer')
+  // 定义中间件upload
+  const upload = multer({dest: __dirname + '/../../uploads'})
+  // express本身是获取不到上传数据的，所以需要使用一个中间件来处理获取上传文件
+  app.post('/admin/api/upload', upload.single('file'), async (req, res, next) => {
+    const file = req.file
+    console.log('file is ', file)
+    // 前端无法直接访问后端，后端可以将某些资源处理成静态文件供前端访问
+    file.url = `http://localhost:3000/uploads/${file.filename}`
+    res.send(file)
+  })
 }
