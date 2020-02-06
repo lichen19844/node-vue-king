@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>分类列表</h1>
+    <!-- items的子项是item，每个item有_id, parent, name -->
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="230px"></el-table-column>
       <!-- <el-table-column prop="parent" label="上级分类"></el-table-column> -->

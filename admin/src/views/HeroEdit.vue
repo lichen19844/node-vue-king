@@ -13,8 +13,20 @@
         </el-select>
       </el-form-item> -->
       <el-form-item label="名称" >
-        <!-- input随写随存入model -->
         <el-input placeholder="请输入内容" v-model="model.name"></el-input>
+      </el-form-item>
+      <el-form-item label="称号" >
+        <el-input placeholder="请输入内容" v-model="model.title"></el-input>
+      </el-form-item>
+      <el-form-item label="类型" >
+        <el-select placeholder="请选择" v-model="model.categories" style="width: 100%">
+          <el-option
+            v-for="item of categories"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="头像" >
         <!-- input随写随存入model -->
@@ -42,11 +54,11 @@ export default {
   },
   data () {
     return {
+      categories: [],
       model: {
         name: '',
         avator: ''
       },
-      // parents: []
     }
   },
   methods: {
@@ -76,15 +88,14 @@ export default {
       console.log('res is ', res)
       this.model = res.data
     },
-    async fetchParents () {
-      const res = await this.$http.get(`rest/heros`)
-      this.parents = res.data
-      console.log('this.parents is ', this.parents)
+    async fetchCategories () {
+      const res = await this.$http.get(`rest/categories`)
+      this.categories = res.data
     }
   },
   created () {
-    // this.fetchParents()
     this.id && this.fetch()
+    this.fetchCategories()
   }
 }
 </script>
