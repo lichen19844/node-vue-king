@@ -57,7 +57,7 @@ export default {
     },
     // 进入编辑页面时能够让输入框内显示之前的值
     async fetch () {
-      // 数据库对应方法没有使用populate方法，所以只能拿到值为id的parent，而不是完整的parent对象
+      // 数据库对应方法没有使用populate方法时，所以只能拿到模型第一层的字段_id，name和字段值为id的parent，而不是完整的parent对象
       const res = await this.$http.get(`rest/categories/${this.id}`)
       console.log('res is ', res)
       this.model = res.data

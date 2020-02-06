@@ -2,16 +2,6 @@
   <div class="about">
     <h1>{{id? '编辑': '新建'}}英雄</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
-      <!-- <el-form-item label="上级分类" >
-        <el-select placeholder="请选择" v-model="model.parent" style="width: 100%">
-          <el-option
-            v-for="item of parents"
-            :key="item._id"
-            :label="item.name"
-            :value="item._id"
-          ></el-option>
-        </el-select>
-      </el-form-item> -->
       <el-form-item label="名称" >
         <el-input placeholder="请输入内容" v-model="model.name"></el-input>
       </el-form-item>
@@ -19,7 +9,7 @@
         <el-input placeholder="请输入内容" v-model="model.title"></el-input>
       </el-form-item>
       <el-form-item label="类型" >
-        <el-select placeholder="请选择" v-model="model.categories" style="width: 100%">
+        <el-select placeholder="请选择" v-model="model.categories" multiple style="width: 100%">
           <el-option
             v-for="item of categories"
             :key="item._id"
