@@ -6,6 +6,7 @@
       <!-- <el-table-column prop="parent" label="上级分类"></el-table-column> -->
       <!-- <el-table-column prop="parent.name" label="上级分类"></el-table-column> -->
       <el-table-column prop="name" label="英雄名称"></el-table-column>
+      <el-table-column prop="title" label="称号"></el-table-column>
       <el-table-column prop="avator" label="头像">
         <template v-slot="scope">
           <img :src="scope.row.avator" alt="" style="height: 3rem">

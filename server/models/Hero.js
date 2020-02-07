@@ -11,6 +11,7 @@ const schema = new mongoose.Schema({
     attack: { type: Number },
     survive: { type: Number }
   },
+  // skills暂时不做
   skills: [{
     icon: { type: String },
     name: { type: String },

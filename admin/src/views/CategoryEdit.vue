@@ -4,13 +4,11 @@
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="上级分类" >
         <!-- model 有 _id, parent, name-->
-        <el-select placeholder="请选择" v-model="model.parent" style="width: 100%">
+        <el-select placeholder="请选择" v-model="model.parent" filterable style="width: 100%">
           <!-- parents的子项是item，每个item有_id, parent, name，这里目前只显示name -->
           <el-option
-            v-for="item of parents"
-            :key="item._id"
-            :label="item.name"
-            :value="item._id"
+            v-for="item of parents" :key="item._id"
+            :label="item.name" :value="item._id"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -61,6 +59,7 @@ export default {
       const res = await this.$http.get(`rest/categories/${this.id}`)
       console.log('res is ', res)
       this.model = res.data
+      console.log('this.model is ', this.model)
     },
     // 拿到列表页面所有数据
     async fetchParents () {
