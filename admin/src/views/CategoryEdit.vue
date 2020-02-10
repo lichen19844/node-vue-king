@@ -5,7 +5,7 @@
       <el-form-item label="上级分类" >
         <!-- model 有 _id, parent, name-->
         <el-select placeholder="请选择" v-model="model.parent" filterable style="width: 100%">
-          <!-- parents的子项是item，每个item有_id, parent, name，这里目前只显示name -->
+          <!-- parents的子项是item，每个item有_id和字段parent, name，这里目前只显示字段name -->
           <el-option
             v-for="item of parents" :key="item._id"
             :label="item.name" :value="item._id"

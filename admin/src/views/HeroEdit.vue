@@ -90,8 +90,14 @@
               <el-form-item label="描述">
                 <el-input type="textarea" v-model="item.description"></el-input>
               </el-form-item>
-              <el-form-item label="提示">
+              <el-form-item label="小提示">
                 <el-input v-model="item.tips"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="danger" size="small" 
+                  @click="model.skills.splice(i, 1)">
+                  删除
+                </el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -116,6 +122,7 @@ export default {
       model: {
         name: '',
         avator: '',
+        categories: [],
         scores: {
           difficult: 0
         },
