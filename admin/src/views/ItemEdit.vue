@@ -48,14 +48,12 @@ export default {
   },
   methods: {
     afterUpload (res) {
-      console.log(res)
       this.$set(this.model, 'icon', res.url)
       // this.model.icon = res.url
     },
     async save() {
       let res
       if (this.id) {
-        console.log('this.id and $route.params.id ', this.id, this.$route.params.id)
         res = await this.$http.put(`rest/items/${this.id}`, this.model)
         res
       } else {
@@ -70,13 +68,7 @@ export default {
     },
     async fetch () {
       const res = await this.$http.get(`rest/items/${this.id}`)
-      console.log('res is ', res)
       this.model = res.data
-    },
-    async fetchParents () {
-      const res = await this.$http.get(`rest/items`)
-      this.parents = res.data
-      console.log('this.parents is ', this.parents)
     }
   },
   created () {

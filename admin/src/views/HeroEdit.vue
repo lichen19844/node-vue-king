@@ -139,7 +139,6 @@ export default {
     async save() {
       let res
       if (this.id) {
-        console.log('this.id and $route.params.id ', this.id, this.$route.params.id)
         res = await this.$http.put(`rest/heros/${this.id}`, this.model)
         res
       } else {
@@ -154,7 +153,6 @@ export default {
     },
     async fetch () {
       const res = await this.$http.get(`rest/heros/${this.id}`)
-      console.log('res is ', res)
       // this.model = res.data
       this.model = Object.assign({}, this.model, res.data)
     },
