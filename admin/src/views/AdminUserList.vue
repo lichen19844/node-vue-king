@@ -35,7 +35,7 @@ export default {
     },
     async remove (row) {
       // $confirm 是element提供的
-      this.$confirm(`是否确定要删除分类？"${row.username}"`, '提示', {
+      this.$confirm(`是否确定要删除管理员用户？"${row.username}"`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

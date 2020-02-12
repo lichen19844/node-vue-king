@@ -8,7 +8,7 @@
       </el-form-item>
       <el-form-item label="密码" >
         <!-- input随写随存入model -->
-        <el-input type="password" placeholder="请输入密码" v-model="model.password"></el-input>
+        <el-input type="text" placeholder="请输入密码" v-model="model.password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit" round>保存</el-button>

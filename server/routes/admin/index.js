@@ -87,4 +87,12 @@ module.exports = app => {
     file.url = `http://localhost:3000/uploads/${file.filename}`
     res.send(file)
   })
+
+  app.post('/admin/api/login', async (req, res, next) => {
+    // res.send('ok')
+    const { username, password } = req.body
+    // 1. 根据用户名找用户
+    // 2. 校验密码
+    // 3. 返回token
+  })
 }
