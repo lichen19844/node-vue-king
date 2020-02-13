@@ -5,6 +5,7 @@ module.exports = app => {
   const router = express.Router({
     mergeParams: true
   })
+  const bcrypt = require('bcrypt')
   /*
   req.Model 就是 mongoose.model('req.Model', schema)  即
   
@@ -62,6 +63,7 @@ module.exports = app => {
   router.get('/:id', async (req, res) => {
     const model = await req.Model.findById(req.params.id)
     res.send(model)
+    console.log('res.statusCode is ', res.statusCode)
   })  
 
   // app.use是这个文件中第一个执行的方法，先匹配路径，再执行后面的中间件，再执行next即router
@@ -70,9 +72,9 @@ module.exports = app => {
     const modelName = require('inflection').classify(req.params.resource)
     // 挂载Model到请求对象req上成为一个属性，router需要用到它时可以从全局的req上取到。不能使用const Model，因为后面的router访问不到
     req.Model = require(`../../models/${modelName}`)
-    console.log(req)
+    console.log('req is ', req)
     console.log('req is contain Model ', req.Model)
-    console.log('req is contain Model ', req.Model.modelName)
+    console.log('req is contain Model.modelName ', req.Model.modelName)
     next()
   } ,router)
 
@@ -90,9 +92,38 @@ module.exports = app => {
 
   app.post('/admin/api/login', async (req, res, next) => {
     // res.send('ok')
+    // 解构接收数据，对其操作
     const { username, password } = req.body
     // 1. 根据用户名找用户
+    const AdminUser = require('../../models/AdminUser')
+    const user = await AdminUser.findOne({
+      username: username
+    }).select('+password')
+    console.log('user info is, ', user)
+    // 用户不存在
+    if (!user) {
+      return res.status(422).send({
+        message: '用户不存在'
+      })
+    }
     // 2. 校验密码
+    const isValid = bcrypt.compareSync(password, user.password)
+    console.log(isValid)
+    // 密码不对
+    if (!isValid) {
+      return res.status(422).send({
+        message: '密码不正确，请重新输入'
+      })
+    }
+
     // 3. 返回token
+    const jwt = require('jsonwebtoken')
+    // jwt.sign({
+    //   id: user._id,
+    //   _id: user._id,
+    //   username: user.username
+    // })
+    const token = jwt.sign({id: user._id}, app.get('secret'))
+    res.send({token})
   })
 }

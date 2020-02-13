@@ -27,9 +27,13 @@ export default {
     async login() {
       console.log('this model is ', this.model)
       console.log('$route is ', this.$route)
-      // 传递登录数据，请求接口
+      // 传递登录数据，请求接口，返回的res.data是个token
       const res = await this.$http.post('login', this.model)
-      console.log('res.data is ', res.data)
+      console.log('res is ', res)
+      console.log('token is ', res.data.token)
+      // sessionStorage.token = res.data.token
+      localStorage.token = res.data.token
+
     }
   }
 }
