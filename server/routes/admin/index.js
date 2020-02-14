@@ -6,6 +6,11 @@ module.exports = app => {
     mergeParams: true
   })
   const bcrypt = require('bcrypt')
+  const jwt = require('jsonwebtoken')
+  const assert = require('http-assert')
+  const ok = require('assert')
+  const AdminUser = require('../../models/AdminUser')
+
   /*
   req.Model 就是 mongoose.model('req.Model', schema)  即
   
@@ -20,17 +25,18 @@ module.exports = app => {
 
   // const req.Model = require('../../models/req.Model')
 
+  // 创建资源
   // 加一个post方法，接口地址是，async函数是写一些执行东西，比如把数据存进数据库
   router.post('/', async (req, res) => {
     // const Model = require(`../../models/${req.params.resource}`)
     // 使用数据库及其模型，使用req.Model.create方法创建数据，数据来源是客户端submit提交过来的数据,存进Mongodb
-    // const model = await req.Model.create(req.body)
     const model = await req.Model.create(req.body)
     console.log(model)
     // 发回给前端客户端（但是客户端在哪里接收它呢？可以在rest client插件里看到返回），让客户端知道数据库模型req.Model创建完成和创建的数据
     res.send(model)
   })
 
+  // 更新资源
   router.put('/:id', async (req, res) => {
     console.log('req.body is ', req.body)
     // req.params.id能拿到/categories/:id接到的id值
@@ -40,6 +46,7 @@ module.exports = app => {
     res.send('model')
   })
 
+  // 删除资源
   router.delete('/:id', async (req, res) => {
     await req.Model.findByIdAndDelete(req.params.id, req.body)
     res.send({
@@ -47,7 +54,16 @@ module.exports = app => {
     })
   })
 
-  router.get('/', async (req, res) => {
+  // 资源列表
+  router.get('/', async (req, res, next) => {
+    // 获取用户信息，校验信息
+    const token = String(req.headers.authorization || '').split(' ').pop()
+    const {id} = jwt.verify(token, app.get('secret'))
+    req.user = await AdminUser.findById(id)
+    console.log(req.user)
+    await next()
+  }, async (req, res) => {
+    console.log(req.user)
     let queryOptions = {}
     if (req.Model.modelName === 'Category') {
       queryOptions.populate = 'parent'
@@ -60,6 +76,7 @@ module.exports = app => {
     res.send(items)
   })
 
+  // 资源详情
   router.get('/:id', async (req, res) => {
     const model = await req.Model.findById(req.params.id)
     res.send(model)
@@ -90,34 +107,41 @@ module.exports = app => {
     res.send(file)
   })
 
+  // 登录逻辑
   app.post('/admin/api/login', async (req, res, next) => {
     // res.send('ok')
-    // 解构接收数据，对其操作
+    // 接收数据并解构
     const { username, password } = req.body
     // 1. 根据用户名找用户
-    const AdminUser = require('../../models/AdminUser')
     const user = await AdminUser.findOne({
       username: username
     }).select('+password')
     console.log('user info is, ', user)
-    // 用户不存在
-    if (!user) {
-      return res.status(422).send({
-        message: '用户不存在'
-      })
-    }
-    // 2. 校验密码
+    // 判断用户不存在
+    // assert(user, 422, {message: '用户不存在'})
+    assert(user, 422, '用户不存在')
+    // try {
+    //   assert(user, 422, '用户不存在')
+    // } catch (err) {
+    //   ok(err.status === 422)
+    //   ok(err.message === '用户不存在')
+    //   ok(err.expose)
+    // }
+    // if (!user) {
+    //   return res.status(422).send({
+    //     message: '用户不存在'
+    //   })
+    // }
+    // 2. 用户存在，校验密码
     const isValid = bcrypt.compareSync(password, user.password)
-    console.log(isValid)
     // 密码不对
-    if (!isValid) {
-      return res.status(422).send({
-        message: '密码不正确，请重新输入'
-      })
-    }
-
+    assert(isValid, 422, '密码不正确，请重新输入')
+    // if (!isValid) {
+    //   return res.status(422).send({
+    //     message: '密码不正确，请重新输入'
+    //   })
+    // }
     // 3. 返回token
-    const jwt = require('jsonwebtoken')
     // jwt.sign({
     //   id: user._id,
     //   _id: user._id,
@@ -125,5 +149,12 @@ module.exports = app => {
     // })
     const token = jwt.sign({id: user._id}, app.get('secret'))
     res.send({token})
+  })
+
+  // 处理错误
+  app.use(async (err, req, res, next) => {
+    res.status(err.statusCode).send({
+      message: err.message
+    })
   })
 }
