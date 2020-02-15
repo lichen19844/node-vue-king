@@ -1,6 +1,10 @@
 const express = require('express')
 
 const app = express()
+app.all('*', function(req, res, next) {
+  res.setHeader("Access-Control-Expose-Headers","Token");;
+  next();
+});
 
 app.set('secret', 'jsdru395fnsd9348u5ew43h543k')
 

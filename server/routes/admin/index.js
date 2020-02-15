@@ -8,7 +8,7 @@ module.exports = app => {
   const bcrypt = require('bcrypt')
   const jwt = require('jsonwebtoken')
   const assert = require('http-assert')
-  const ok = require('assert')
+  // const ok = require('assert')
   const AdminUser = require('../../models/AdminUser')
 
   /*
@@ -58,9 +58,14 @@ module.exports = app => {
   router.get('/', async (req, res, next) => {
     // 获取用户信息，校验信息
     const token = String(req.headers.authorization || '').split(' ').pop()
-    const {id} = jwt.verify(token, app.get('secret'))
+    // 该格式也正确 assert(token, 401, {message: '请先提供 jwt token'})
+    assert(token, 401, '请先提供 jwt token')
+    const { id } = jwt.verify(token, app.get('secret'))
+    assert(id, 401, '无效的 jwt token')
     req.user = await AdminUser.findById(id)
-    console.log(req.user)
+    assert(req.user, 401, '请先登录')
+    await res.setHeader("Token",token);
+    // res.setHeader("Access-Control-Expose-Headers","Token");
     await next()
   }, async (req, res) => {
     console.log(req.user)
@@ -151,9 +156,10 @@ module.exports = app => {
     res.send({token})
   })
 
-  // 处理错误
+  // 处理错误模块
   app.use(async (err, req, res, next) => {
-    res.status(err.statusCode).send({
+    // 有时候报错可能没有状态码，我们就用500代替
+    res.status(err.statusCode || 500).send({
       message: err.message
     })
   })
