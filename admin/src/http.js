@@ -28,10 +28,12 @@ http.interceptors.response.use(res => {
     return res
   } else {
     console.log('黑客入侵撸羊毛失败哦')
+    localStorage.clear()
     router.push('/login')
   }
   
 }, err => {
+  console.log('err is ', err)
   console.log('err.name is ', err.name)
   console.log('err.response is ', err.response)
   console.log('err.response.data.message is ', err.response.data.message)
@@ -42,6 +44,11 @@ http.interceptors.response.use(res => {
       showClose: true,
       message: err.response.data.message
     })
+    if (err.response.status === 401) {
+      console.log('login')
+      // Vue.prototype.$router.push('/login')
+      router.push('/login')
+    }
   }
   return Promise.reject(err)
 })

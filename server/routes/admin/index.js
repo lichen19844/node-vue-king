@@ -10,6 +10,11 @@ module.exports = app => {
   const assert = require('http-assert')
   // const ok = require('assert')
   const AdminUser = require('../../models/AdminUser')
+  
+  // 登录校验中间件
+  const authMiddleware = require('../../middleware/auth')
+  // 资源中间件
+  const resourceMiddleware = require('../../middleware/resource')
 
   /*
   req.Model 就是 mongoose.model('req.Model', schema)  即
@@ -55,20 +60,8 @@ module.exports = app => {
   })
 
   // 资源列表
-  router.get('/', async (req, res, next) => {
-    // 获取用户信息，校验信息
-    const token = String(req.headers.authorization || '').split(' ').pop()
-    // 该格式也正确 assert(token, 401, {message: '请先提供 jwt token'})
-    assert(token, 401, '请先提供 jwt token')
-    const { id } = jwt.verify(token, app.get('secret'))
-    assert(id, 401, '无效的 jwt token')
-    req.user = await AdminUser.findById(id)
-    assert(req.user, 401, '请先登录')
-    await res.setHeader("Token",token);
-    // res.setHeader("Access-Control-Expose-Headers","Token");
-    await next()
-  }, async (req, res) => {
-    console.log(req.user)
+  router.get('/', async (req, res) => {
+    console.log('req.app is ', req.app === res.app === app)
     let queryOptions = {}
     if (req.Model.modelName === 'Category') {
       queryOptions.populate = 'parent'
@@ -89,22 +82,13 @@ module.exports = app => {
   })  
 
   // app.use是这个文件中第一个执行的方法，先匹配路径，再执行后面的中间件，再执行next即router
-  app.use('/admin/api/rest/:resource', async (req, res, next) => {
-    // 将父级接收的:resource参数转成模型的名称(首字母大写单数)
-    const modelName = require('inflection').classify(req.params.resource)
-    // 挂载Model到请求对象req上成为一个属性，router需要用到它时可以从全局的req上取到。不能使用const Model，因为后面的router访问不到
-    req.Model = require(`../../models/${modelName}`)
-    console.log('req is ', req)
-    console.log('req is contain Model ', req.Model)
-    console.log('req is contain Model.modelName ', req.Model.modelName)
-    next()
-  } ,router)
+  app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 
   const multer = require('multer')
   // 定义中间件upload
   const upload = multer({dest: __dirname + '/../../uploads'})
   // express本身是获取不到上传数据的，所以需要使用一个中间件来处理获取上传文件
-  app.post('/admin/api/upload', upload.single('file'), async (req, res, next) => {
+  app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res, next) => {
     const file = req.file
     console.log('file is ', file)
     // 前端无法直接访问后端，后端可以将某些资源处理成静态文件供前端访问

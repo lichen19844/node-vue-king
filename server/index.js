@@ -1,8 +1,10 @@
 const express = require('express')
 
 const app = express()
+
 app.all('*', function(req, res, next) {
-  res.setHeader("Access-Control-Expose-Headers","Token");;
+  // res.setHeader("Access-Control-Expose-Headers","Token");
+  res.header("Access-Control-Expose-Headers","Token");
   next();
 });
 
