@@ -26,7 +26,7 @@ export default {
   methods: {
     async login() {
       console.log('this model is ', this.model)
-      console.log('$route is ', this.$route)
+      console.log('$route in login page is ', this.$route)
       // 传递登录数据，请求接口，返回的res.data是个token
       const res = await this.$http.post('login', this.model)
       console.log('res is ', res)

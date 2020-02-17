@@ -21,7 +21,8 @@
         <!-- <el-input placeholder="请输入内容" v-model="model.icon"></el-input> -->
         <el-upload
           class="avatar-uploader"
-          :action="this.$http.defaults.baseURL + '/upload'"
+          :action="mixUploadUrl"
+          :headers ="mixGetAuthHeaders()"
           :show-file-list="false"
           :on-success="afterUpload">
           <img v-if="model.icon" :src="model.icon" class="avatar">
@@ -74,6 +75,7 @@ export default {
   created () {
     // this.fetchParents()
     this.id && this.fetch()
+    console.log('$route in item edit page is ', this.$route)
   }
 }
 </script>

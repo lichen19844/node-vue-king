@@ -15,7 +15,8 @@
             <!-- <el-input placeholder="请输入内容" v-model="model.icon"></el-input> -->
             <el-upload
               class="avatar-uploader"
-              :action="this.$http.defaults.baseURL + '/upload'"
+              :action="mixUploadUrl"
+              :headers ="mixGetAuthHeaders()"
               :show-file-list="false"
               :on-success="afterUpload">
               <img v-if="model.avator" :src="model.avator" class="avatar">
@@ -80,7 +81,8 @@
               <el-form-item label="图标">
                <el-upload
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload'"
+                :action="mixUploadUrl"
+                :headers ="mixGetAuthHeaders()"
                 :show-file-list="false"
                 :on-success="res => $set(item, 'icon', res.url)">
                 <img v-if="item.icon" :src="item.icon" class="avatar">
