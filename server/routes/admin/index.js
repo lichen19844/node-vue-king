@@ -121,7 +121,7 @@ module.exports = app => {
     //     message: '用户不存在'
     //   })
     // }
-    // 2. 用户存在，校验密码
+    // 2. 数据库里的用户存在，则校验密码
     const isValid = bcrypt.compareSync(password, user.password)
     // 密码不对
     assert(isValid, 422, '密码不正确，请重新输入')
@@ -136,7 +136,11 @@ module.exports = app => {
     //   _id: user._id,
     //   username: user.username
     // })
-    const token = jwt.sign({id: user._id}, app.get('secret'))
+    const token = jwt.sign({
+      id: String(user._id)
+      }, 
+      app.get('secret')
+    )
     res.send({token})
   })
 

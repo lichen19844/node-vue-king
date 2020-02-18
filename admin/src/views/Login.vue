@@ -9,7 +9,7 @@
           <el-input type="password" v-model="model.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" native-type="submit">登录</el-button>
+          <el-button type="primary" native-type="submit" :disabled="!isValid">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -20,7 +20,10 @@
 export default {
   data () {
     return {
-      model: {}
+      model: {
+        username: '',
+        password: ''
+      }
     }
   },
   methods: {
@@ -38,7 +41,18 @@ export default {
         type: 'success',
         message: '登录成功'
       })
+    },
+    async initLogin () {
+      localStorage.clear()
     }
+  },
+  computed: {
+    isValid () {
+      return String(this.model.username).length >= 1 && String(this.model.password).length >= 1
+    }
+  },
+  created () {
+    this.initLogin()
   }
 }
 </script>
