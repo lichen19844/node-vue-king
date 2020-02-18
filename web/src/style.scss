@@ -3,4 +3,45 @@
 * {
   box-sizing: border-box;
   outline: none;
+};
+
+html {
+  font-size: 13px;
+};
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.2em;
+  background: #f1f1f1;
+};
+
+a {
+  color: #999;
+};
+
+// colors
+$colors: (
+  "primary": #db9e3f,
+  "white": #fff,
+  "light": #f9f9f9,
+  "gray": #999,
+  "dark-1": #343440,
+  "dark": #222,
+  "black": #000
+);
+
+@each $colorKey, $color in $colors {
+  .text-#{$colorKey} {
+    color: $color;
+  }
+  .bg-#{$colorKey} {
+    background-color: $color;
+  }
 }
+
+@each $var in (left, center, right){
+  .text-#{$var} {
+    text-align: $var;
+  }
+};

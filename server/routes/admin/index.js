@@ -138,9 +138,7 @@ module.exports = app => {
     // })
     const token = jwt.sign({
       id: String(user._id)
-      }, 
-      app.get('secret')
-    )
+      }, app.get('secret'))
     res.send({token})
   })
 
