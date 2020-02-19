@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  name: { type: String },
+  name: { type: String, unique: true },
   avator: { type: String },
   title: { type: String },
   categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],

@@ -31,24 +31,33 @@ http.interceptors.response.use(res => {
     localStorage.clear()
     router.push('/login')
   }
-  
 }, err => {
   console.log('err is ', err)
   console.log('err.name is ', err.name)
   console.log('err.response is ', err.response)
   console.log('err.response.data.message is ', err.response.data.message)
+  // console.log(String(err.response.data.message).split(' ')[12].split('"')[1])
   if (err.response.data.message) {
     // Vue.prototype.$message.error(err.response.data.message)
-    Vue.prototype.$message({
-      type: 'error',
-      showClose: true,
-      message: err.response.data.message
-    })
-    if (err.response.status === 401) {
-      console.log('login')
-      // Vue.prototype.$router.push('/login')
-      router.push('/login')
-    }
+    if ((err.response.data.message).includes('E11000 duplicate key error collection')) {
+      err.response.data.message = String(err.response.data.message).split(' ')[12].split('"')[1]
+      Vue.prototype.$message({
+        type: 'error',
+        showClose: true,
+        message: err.response.data.message + ` 已存在`
+      })
+    } else {
+      Vue.prototype.$message({
+        type: 'error',
+        showClose: true,
+        message: err.response.data.message
+      })
+      if (err.response.status === 401) {
+        console.log('login')
+        // 失效 Vue.prototype.$router.push('/login')
+        router.push('/login')
+      }
+    }    
   }
   return Promise.reject(err)
 })

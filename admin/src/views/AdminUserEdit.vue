@@ -43,7 +43,7 @@ export default {
       this.$router.push('/admin_users/list')
       this.$message({
         type: 'success',
-        message: '保存成功'
+        message: '注册成功'
       })
     },
     // 进入编辑页面时能够让输入框内显示之前的值

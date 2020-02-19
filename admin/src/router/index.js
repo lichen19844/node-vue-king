@@ -76,8 +76,10 @@ const router = new VueRouter({
   routes
 })
 
+// 导航守卫
 router.beforeEach((to, from, next) => {
   console.log('to.meta and to.path are ', to.meta, to.path)
+  // 需要同时满足2个条件
   if (!to.meta.isPublic && !localStorage.token) {
     return next('/login')
   }
