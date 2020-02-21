@@ -5,8 +5,13 @@ import router from './router'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 Vue.use(VueAwesomeSwiper)
+import './assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false
+
+// 注册卡片Card到全局
+import Card from './components/Card'
+Vue.component('m-card', Card)
 
 new Vue({
   router,
