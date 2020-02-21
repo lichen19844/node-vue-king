@@ -60,7 +60,9 @@ a {
 .flex-column {
   flex-direction: column;
 };
-
+.flex-wrap {
+  flex-wrap: wrap;
+};
 .d-flex {
   display: flex;
 };
@@ -142,3 +144,19 @@ a {
   }
 }
 
+// sprite
+.sprite {
+  background: url(../images/index.png) no-repeat 0 0;
+  background-size: 28.8462rem;
+  display: inline-block;
+  &.sprite-news {
+    background-position: 63.546% 15.517%;
+    width: 1.7692rem;
+    height: 1.5385rem;
+  };
+  &.sprite-arrow {
+    background-position: 38.577% 52.076%;
+    width: 0.7692rem;
+    height: 0.7692rem;
+  }
+}
