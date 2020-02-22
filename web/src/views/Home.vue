@@ -28,7 +28,8 @@
     </div>
     <!-- end of nav icons -->
 
-    <m-card icon="menu" title="新闻资讯">
+    <!-- m-card先不要了 -->
+    <!-- <m-card icon="menu" title="新闻资讯">
       <div class="nav jc-between">
         <div class="nav-item active">
           <div class="nav-link">热门</div>
@@ -58,17 +59,24 @@
           </swiper-slide>
         </swiper>
       </div>
-    </m-card>
+    </m-card>-->
+
+    <!-- 想要的结构 -->
+    <m-list-card icon="menu" title="新闻资讯" :categories="newsCast">
+      <template #items="{category}">
+        <div class="py-2" v-for="(news, i) in category.newsList" :key="i">
+          <span>[{{news.categoryName}}]</span>
+          <span>|</span>
+          <span>{{news.title}}</span>
+          <span>{{news.date}}</span>
+        </div>
+      </template>
+    </m-list-card>
+
     <m-card icon="menu" title="英雄列表"></m-card>
     <m-card icon="menu" title="精彩视频"></m-card>
     <m-card icon="menu" title="图文攻略"></m-card>
 
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
     <p>aaaa</p>
     <p>aaaa</p>
     <p>aaaa</p>
@@ -93,7 +101,78 @@ export default {
           delay: 2000,
           disableOnInteraction: false
         }
-      }
+      },
+      newsCast: [
+        {
+          name: "热门",
+          /* eslint-disable */
+          // eslint-disable-next-line
+          newsList: new Array(5).fill({}).map(v => ({
+            categoryName: "公告",
+            title: "1疫情期间全服不停机公告",
+            date: "06/01"
+          }))
+          // newsList: [
+          //   {
+          //     categoryName: '公告1',
+          //     title: '1疫情期间全服不停机公告',
+          //     date: '06/01'
+          //   },
+          //   {
+          //     categoryName: '公告2',
+          //     title: '2疫情期间全服不停机公告',
+          //     date: '06/01'
+          //   },
+          //   {
+          //     categoryName: '公告3',
+          //     title: '3疫情期间全服不停机公告',
+          //     date: '06/01'
+          //   },
+          //   {
+          //     categoryName: '公告4',
+          //     title: '4疫情期间全服不停机公告',
+          //     date: '06/01'
+          //   },
+          //   {
+          //     categoryName: '公告5',
+          //     title: '5疫情期间全服不停机公告',
+          //     date: '06/01'
+          //   }
+          // ]
+        },
+        {
+          name: "新闻",
+          newsList: new Array(5).fill({}).map(() => ({
+            categoryName: "新闻",
+            title: "2疫情期间全服不停机公告",
+            date: "06/02"
+          }))
+        },
+        {
+          name: "公告",
+          newsList: new Array(5).fill({}).map(() => ({
+            categoryName: "公告",
+            title: "3疫情期间全服不停机公告",
+            date: "06/02"
+          }))
+        },
+        {
+          name: "活动",
+          newsList: new Array(5).fill({}).map(() => ({
+            categoryName: "活动",
+            title: "4疫情期间全服不停机公告",
+            date: "06/02"
+          }))
+        },
+        {
+          name: "赛事",
+          newsList: new Array(5).fill({}).map(() => ({
+            categoryName: "赛事",
+            title: "5疫情期间全服不停机公告",
+            date: "06/02"
+          }))
+        }
+      ]
     };
   }
 };

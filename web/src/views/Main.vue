@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-
+    <!-- 子组件路由入口 -->
     <router-view></router-view>
   </div>
 </template>
