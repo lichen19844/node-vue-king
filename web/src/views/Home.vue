@@ -107,11 +107,21 @@ export default {
           name: "热门",
           /* eslint-disable */
           // eslint-disable-next-line
+
+          // newsList: new Array(5).fill({}).map(v => {
+          //   return {
+          //     categoryName: "公告",
+          //     title: "1疫情期间全服不停机公告",
+          //     date: "06/01"
+          //   }
+          // })
+          // 等同于以下写法
           newsList: new Array(5).fill({}).map(v => ({
             categoryName: "公告",
             title: "1疫情期间全服不停机公告",
             date: "06/01"
           }))
+          
           // newsList: [
           //   {
           //     categoryName: '公告1',

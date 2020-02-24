@@ -21,6 +21,7 @@
             <span>这是一段新闻标题</span>
             <span>06/20</span>
             </div>-->
+            <!-- 具名插槽和作用域插槽结合 -->
             <slot name="items" :category="category"></slot>
           </swiper-slide>
         </swiper>

@@ -60,7 +60,7 @@
       
       <el-main>
         <h1 v-show="handleShow">欢迎进入管理后台</h1>
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>
         <!-- <el-table :data="tableData">
           <el-table-column prop="date" label="日期" width="140">
           </el-table-column>
