@@ -6,4 +6,7 @@ module.exports = app => {
     useUnifiedTopology: true,
     useCreateIndex: true
   })
+
+  // 引用指定文件夹下的所有文件
+  require('require-all')(__dirname + '/../models')
 }

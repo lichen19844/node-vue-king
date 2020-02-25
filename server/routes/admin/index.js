@@ -71,6 +71,7 @@ module.exports = app => {
     // const items = await req.Model.find().populate({path: 'parent'}).limit(10)
     const items = await req.Model.find().setOptions(queryOptions).limit(100)
     console.log('queryOptions is ', queryOptions)
+    console.log('lean is', req.Model.find().lean())
     res.send(items)
   })
 
@@ -82,7 +83,12 @@ module.exports = app => {
   })  
 
   // app.use是这个文件中第一个执行的方法，先匹配路径，再执行后面的中间件，再执行next即router
-  app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
+  app.use(
+    '/admin/api/rest/:resource', 
+    authMiddleware(), 
+    resourceMiddleware(), 
+    router
+  )
 
   const multer = require('multer')
   // 定义中间件upload

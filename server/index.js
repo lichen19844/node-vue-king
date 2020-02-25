@@ -21,6 +21,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 
 // 子路由功能，引用过来是个函数，需要执行
 require('./routes/admin')(app)
+require('./routes/web')(app)
 
 // 数据库功能，app这个参数暂时传入进去没用
 require('./plugins/db')(app)
