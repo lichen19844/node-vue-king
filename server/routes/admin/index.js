@@ -61,7 +61,7 @@ module.exports = app => {
 
   // 资源列表
   router.get('/', async (req, res) => {
-    console.log('req.app is ', req.app === res.app === app)
+    console.log('req.app is true ? ', req.app === res.app === app)
     let queryOptions = {}
     if (req.Model.modelName === 'Category') {
       queryOptions.populate = 'parent'
