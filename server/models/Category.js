@@ -21,7 +21,7 @@ schema.virtual('newsList', {
 
 // schema.virtual('grandChildren', [{
 //   localField: '_id',
-//   foreignField: 'parent',
+//   foreignField: '_id',
 //   justOne: false,
 //   ref: 'Category'
 // }])
