@@ -50,7 +50,7 @@ module.exports = app => {
       name: '新闻分类'
     })
     const cats = await Category.aggregate([
-      {$match: {parent: parent._id} },
+      { $match: {parent: parent._id} },
       {
         $lookup: {
           from: 'articles',
@@ -58,9 +58,29 @@ module.exports = app => {
           foreignField: 'categories',
           as: 'newsList'
         }
+      },
+      {
+        $addFields: {
+          newsList: { $slice: ['$newsList', 5]}
+        }
       }
-    ])
-
+    ]);
+    const subCats = cats.map(v => v._id);
+    cats.unshift({
+      name: '热门',
+      newsList: await Article.find().where({
+        categories: { $in: subCats }
+      }).populate('categories').limit(5).lean()
+    })
+    // 将获取到的基础数据的每一个子级元素再次map一下
+    cats.map(cat => {
+      // 再次mapnewsList数组的每一个子级元素
+      cat.newsList.map(news => {
+        news.categoryName = (cat.name === '热门')
+          ? news.categories[0].name :cat.name
+      })
+      return cat
+    })
     res.send(cats)
     // res.send(parent)
   })
