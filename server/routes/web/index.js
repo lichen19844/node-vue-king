@@ -34,7 +34,7 @@ module.exports = app => {
     res.send(newsList)
   })
 
-  // 访问http://localhost:3000/web/api/news/list 可以查看返回数据
+  // 访问http://localhost:3000/web/api/news/list 按查询条件返回数据
   router.get('/news/list', async (req, res) => {
     // const parent = await Category.findOne({
     //   name: '新闻分类'
@@ -74,7 +74,7 @@ module.exports = app => {
     })
     // 将获取到的基础数据的每一个子级元素再次map一下
     cats.map(cat => {
-      // 再次mapnewsList数组的每一个子级元素
+      // 再次map newsList数组的每一个子级元素,并未每个元素新增categoryName属性并根据判断条件赋值
       cat.newsList.map(news => {
         news.categoryName = (cat.name === '热门')
           ? news.categories[0].name :cat.name
