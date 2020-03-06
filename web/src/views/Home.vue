@@ -64,11 +64,11 @@
     <!-- 想要的结构 -->
     <m-list-card icon="menu" title="新闻资讯" :categories="newsCast">
       <template #items="{category}">
-        <div class="py-2" v-for="(news, i) in category.newsList" :key="i">
-          <span>[{{news.categoryName}}]</span>
-          <span>|</span>
-          <span>{{news.title}}</span>
-          <span>{{news.date}}</span>
+        <div class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
+          <span class="text-info">[{{news.categoryName}}]</span>
+          <span class="px-1">|</span>
+          <span class="flex-1 text-dark">{{news.title}}</span>
+          <span>{{news.createdAt | date}}</span>
         </div>
       </template>
     </m-list-card>
@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
 export default {
   data() {
     return {
@@ -102,88 +103,104 @@ export default {
           disableOnInteraction: false
         }
       },
-      newsCast: [
-        {
-          name: "热门",
-          /* eslint-disable */
-          // eslint-disable-next-line
+      newsCast: [],
+      // 废除预存假数据
+      // newsCast: [
+      //   {
+      //     name: "热门",
+      //     /* eslint-disable */
+      //     // eslint-disable-next-line
 
-          // newsList: new Array(5).fill({}).map(v => {
-          //   return {
-          //     categoryName: "公告",
-          //     title: "1疫情期间全服不停机公告",
-          //     date: "06/01"
-          //   }
-          // })
-          // 等同于以下写法
-          newsList: new Array(5).fill({}).map(v => ({
-            categoryName: "公告",
-            title: "1疫情期间全服不停机公告",
-            date: "06/01"
-          }))
+      //     // newsList: new Array(5).fill({}).map(v => {
+      //     //   return {
+      //     //     categoryName: "公告",
+      //     //     title: "1疫情期间全服不停机公告",
+      //     //     date: "06/01"
+      //     //   }
+      //     // })
+      //     // 等同于以下写法
+      //     newsList: new Array(5).fill({}).map(v => ({
+      //       categoryName: "公告",
+      //       title: "1疫情期间全服不停机公告",
+      //       date: "06/01"
+      //     }))
           
-          // newsList: [
-          //   {
-          //     categoryName: '公告1',
-          //     title: '1疫情期间全服不停机公告',
-          //     date: '06/01'
-          //   },
-          //   {
-          //     categoryName: '公告2',
-          //     title: '2疫情期间全服不停机公告',
-          //     date: '06/01'
-          //   },
-          //   {
-          //     categoryName: '公告3',
-          //     title: '3疫情期间全服不停机公告',
-          //     date: '06/01'
-          //   },
-          //   {
-          //     categoryName: '公告4',
-          //     title: '4疫情期间全服不停机公告',
-          //     date: '06/01'
-          //   },
-          //   {
-          //     categoryName: '公告5',
-          //     title: '5疫情期间全服不停机公告',
-          //     date: '06/01'
-          //   }
-          // ]
-        },
-        {
-          name: "新闻",
-          newsList: new Array(5).fill({}).map(() => ({
-            categoryName: "新闻",
-            title: "2疫情期间全服不停机公告",
-            date: "06/02"
-          }))
-        },
-        {
-          name: "公告",
-          newsList: new Array(5).fill({}).map(() => ({
-            categoryName: "公告",
-            title: "3疫情期间全服不停机公告",
-            date: "06/02"
-          }))
-        },
-        {
-          name: "活动",
-          newsList: new Array(5).fill({}).map(() => ({
-            categoryName: "活动",
-            title: "4疫情期间全服不停机公告",
-            date: "06/02"
-          }))
-        },
-        {
-          name: "赛事",
-          newsList: new Array(5).fill({}).map(() => ({
-            categoryName: "赛事",
-            title: "5疫情期间全服不停机公告",
-            date: "06/02"
-          }))
-        }
-      ]
+      //     // newsList: [
+      //     //   {
+      //     //     categoryName: '公告1',
+      //     //     title: '1疫情期间全服不停机公告',
+      //     //     date: '06/01'
+      //     //   },
+      //     //   {
+      //     //     categoryName: '公告2',
+      //     //     title: '2疫情期间全服不停机公告',
+      //     //     date: '06/01'
+      //     //   },
+      //     //   {
+      //     //     categoryName: '公告3',
+      //     //     title: '3疫情期间全服不停机公告',
+      //     //     date: '06/01'
+      //     //   },
+      //     //   {
+      //     //     categoryName: '公告4',
+      //     //     title: '4疫情期间全服不停机公告',
+      //     //     date: '06/01'
+      //     //   },
+      //     //   {
+      //     //     categoryName: '公告5',
+      //     //     title: '5疫情期间全服不停机公告',
+      //     //     date: '06/01'
+      //     //   }
+      //     // ]
+      //   },
+      //   {
+      //     name: "新闻",
+      //     newsList: new Array(5).fill({}).map(() => ({
+      //       categoryName: "新闻",
+      //       title: "2疫情期间全服不停机公告",
+      //       date: "06/02"
+      //     }))
+      //   },
+      //   {
+      //     name: "公告",
+      //     newsList: new Array(5).fill({}).map(() => ({
+      //       categoryName: "公告",
+      //       title: "3疫情期间全服不停机公告",
+      //       date: "06/02"
+      //     }))
+      //   },
+      //   {
+      //     name: "活动",
+      //     newsList: new Array(5).fill({}).map(() => ({
+      //       categoryName: "活动",
+      //       title: "4疫情期间全服不停机公告",
+      //       date: "06/02"
+      //     }))
+      //   },
+      //   {
+      //     name: "赛事",
+      //     newsList: new Array(5).fill({}).map(() => ({
+      //       categoryName: "赛事",
+      //       title: "5疫情期间全服不停机公告",
+      //       date: "06/02"
+      //     }))
+      //   }
+      // ]
     };
+  },
+  methods: {
+    async fetchNewsCast() {
+      const res = await this.$http.get('news/list')
+      this.newsCast = res.data
+    }
+  },
+  created () {
+    this.fetchNewsCast()
+  },
+  filters: {
+    date(val) {
+      return dayjs(val).format('MM/DD')
+    }
   }
 };
 </script>
