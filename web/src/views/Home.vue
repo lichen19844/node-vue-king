@@ -67,8 +67,8 @@
         <div class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
           <span class="text-info">[{{news.categoryName}}]</span>
           <span class="px-1">|</span>
-          <span class="flex-1 text-dark">{{news.title}}</span>
-          <span>{{news.createdAt | date}}</span>
+          <span class="flex-1 text-ellipsis text-dark-1 pr-2">{{news.title}}</span>
+          <span class="fs-sm text-gray-1">{{news.createdAt | date}}</span>
         </div>
       </template>
     </m-list-card>
