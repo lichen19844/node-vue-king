@@ -6,7 +6,7 @@ module.exports = app => {
   // const Category = mongoose.model('Category')
   // const Article = mongoose.model('Article')
 
-  // 模拟往admin后台录入数据，每个子分类的数据量是有要求的，如果用random的方式可能无法定量
+  // 模拟往admin后台录入新闻数据，每个子分类的数据量是有要求的，如果用random的方式可能无法定量
   router.get('/news/init', async (req, res) => {
     const parent = await Category.findOne({
       name: '新闻分类'
@@ -35,7 +35,7 @@ module.exports = app => {
     res.send(newsList)
   })
 
-  // 访问http://localhost:3000/web/api/news/list 按查询条件返回数据
+  // 新闻列表接口，访问http://localhost:3000/web/api/news/list 按查询条件返回数据
   router.get('/news/list', async (req, res) => {
     // const parent = await Category.findOne({
     //   name: '新闻分类'
@@ -89,6 +89,9 @@ module.exports = app => {
     res.send(cats)
     // res.send(parent)
   })
+
+  // 导入英雄数据
+  
 
   app.use('/web/api', router)
 }
