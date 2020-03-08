@@ -191,6 +191,7 @@ export default {
   methods: {
     async fetchNewsCast() {
       const res = await this.$http.get('news/list')
+      // res.data接收server端传过来的res.send数据
       this.newsCast = res.data
     }
   },
