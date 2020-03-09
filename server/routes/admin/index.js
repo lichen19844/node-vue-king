@@ -69,7 +69,7 @@ module.exports = app => {
     }
     // const items = await req.Model.find().populate('parent').limit(10)
     // const items = await req.Model.find().populate({path: 'parent'}).limit(10)
-    const items = await req.Model.find().setOptions(queryOptions).limit(100)
+    const items = await req.Model.find().setOptions(queryOptions).limit(200)
     console.log('queryOptions is ', queryOptions)
     console.log('lean is', req.Model.find().lean())
     res.send(items)

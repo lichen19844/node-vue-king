@@ -6,7 +6,6 @@ module.exports = app => {
   const Hero = require('../../models/Hero');
   // const Category = mongoose.model('Category')
   // const Article = mongoose.model('Article')
-
   // 测试接口，模拟往admin后台录入初始新闻数据，每个子分类的数据量是有要求的，如果用random的方式可能无法定量
   router.get('/news/init', async (req, res) => {
     const parent = await Category.findOne({
@@ -94,6 +93,7 @@ module.exports = app => {
   // 测试接口，模拟往admin后台导入初始英雄数据，以后弃用
   router.get('/heros/init', async (req, res) => {
     await Hero.deleteMany({})
+    // 等同于 await Hero.remove()
     const raw_data_heros = [
       {
         "name": "热门",
@@ -130,26 +130,33 @@ module.exports = app => {
         "heros": [{ "name": "庄周", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/113/113.jpg" }, { "name": "刘禅", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/114/114.jpg" }, { "name": "孙膑", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/118/118.jpg" }, { "name": "姜子牙", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/148/148.jpg" }, { "name": "牛魔", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/168/168.jpg" }, { "name": "张飞", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/171/171.jpg" }, { "name": "蔡文姬", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/184/184.jpg" }, { "name": "太乙真人", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/186/186.jpg" }, { "name": "大乔", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/191/191.jpg" }, { "name": "鬼谷子", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/189/189.jpg" }, { "name": "明世隐", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/501/501.jpg" }, { "name": "杨玉环", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/176/176.jpg" }, { "name": "盾山", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/509/509.jpg" }, { "name": "瑶", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/505/505.jpg" }, { "name": "鲁班大师", "avator": "https://game.gtimg.cn/images/yxzj/img201606/heroimg/525/525.jpg" }]
       }
     ]
-    // const rawData = raw_data_heros.filter(item => item !=== '热门')
+    // 等同于 const raw_data_heros = raw_data_heros.filter(item => item !=== '热门')
+    const test = []
+    // 每个元素cat对象含有name和heros两个键，cat.name, cat.heros
     for (let cat of raw_data_heros) {
-      // await Hero.deleteMany({})
       if (cat.name === '热门') {
-        // 如果某次循环里的name是'热门'，则直接进入下一轮循环，不执行本次循环里的后续代码
+        // 如果某次循环里的name是'热门'，则直接进入下一轮cat循环，不执行本次cat循环里的后续代码
         continue
+        console.log('此条不会打印')
       }
-      // 找到当前分类在数据库中对应的数据
+      // 根据raw_data_heros各个name找到当前分类在数据库中对应的数据
       const category = await Category.findOne({
         name: cat.name
       })
+      // 为heros数组的每个元素hero对象添加一个categories键值，值类型选数组，该数组里放入刚查到的category对象数据
       cat.heros = cat.heros.map(hero => {
         hero.categories = [category]
         // hero.categories = [category._id]
         return hero
       })
       // 录入英雄
+      // 目前报错：BulkWriteError: E11000 duplicate key error collection
       await Hero.insertMany(cat.heros)
+      // test.push(category)
+      test.push(cat.heros)
     }
     // 错误，只会录入for循环最后一组数据  res.send(raw_data_heros)
+    // res.send(test)
     res.send(await Hero.find())
   });
 
