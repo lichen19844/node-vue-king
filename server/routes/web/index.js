@@ -6,12 +6,14 @@ module.exports = app => {
   const Hero = require('../../models/Hero');
   // const Category = mongoose.model('Category')
   // const Article = mongoose.model('Article')
+
   // 测试接口，模拟往admin后台录入初始新闻数据，每个子分类的数据量是有要求的，如果用random的方式可能无法定量
+  // insertMany塞入的数据是按照schema结构手工拼接的数据
   router.get('/news/init', async (req, res) => {
     const parent = await Category.findOne({
       name: '新闻分类'
     });
-    //query到的parent数据为query类型，是一个id值，但是console出来的内容为 { _id: 5e35946299b4032b5c426e6b, name: '新闻分类', __v: 0 }
+    //query到的parent数据为query类型，是一个id值，但是console出来的内容为 { _id: 5e35946299b4032b5c426e6b, name: '新闻分类', __v: 0 }，mongodb会智能匹配
     console.log('parent is ', parent);
     // 只找新闻分类下面的子分类
     const cats = await Category.find().where({ parent: parent }).lean();
@@ -32,7 +34,9 @@ module.exports = app => {
     await Article.deleteMany({});
     // 存入数据库的时候会为每个对象自动生成_id
     await Article.insertMany(newsList);
+    // newsList和Article.find()的数据基本结构是一样的
     res.send(newsList);
+    // res.send(await Article.find());
   })
 
   // 提供web新闻列表接口，访问http://localhost:3000/web/api/news/list 按查询条件返回数据
@@ -50,6 +54,7 @@ module.exports = app => {
     const parent = await Category.findOne({
       name: '新闻分类'
     });
+    // 从分类入手查关联数据
     const cats = await Category.aggregate([
       { $match: { parent: parent._id } },
       {
@@ -91,6 +96,7 @@ module.exports = app => {
   });
 
   // 测试接口，模拟往admin后台导入初始英雄数据，以后弃用
+  // insertMany塞入的数据是按照schema结构手工拼接的数据
   router.get('/heros/init', async (req, res) => {
     await Hero.deleteMany({})
     // 等同于 await Hero.remove()
@@ -142,7 +148,8 @@ module.exports = app => {
       // 根据raw_data_heros各个name找到当前分类在数据库中对应的数据
       const category = await Category.findOne({
         name: cat.name
-      })
+      }).populate('parent')
+      console.log('category is ', category)
       // 为heros数组的每个元素hero对象添加一个categories键值，值类型选数组，该数组里放入刚查到的category对象数据
       cat.heros = cat.heros.map(hero => {
         hero.categories = [category]
@@ -157,12 +164,47 @@ module.exports = app => {
     }
     // 错误，只会录入for循环最后一组数据  res.send(raw_data_heros)
     // res.send(test)
-    res.send(await Hero.find())
+    res.send(
+      // Hero.find()和test的数据基本结构是一样的
+      await Hero.find()
+        .populate({path:'categories', populate:{path: 'parent'}})
+    )
   });
 
   // 提供web英雄列表接口
   router.get('/heros/list', async (req, res) => {
-
+    const parent = await Category.findOne({
+      name: '英雄分类'
+    });
+    // 从分类入手查关联数据
+    const cats = await Category.aggregate([
+      { $match: { parent: parent._id } },
+      {
+        $lookup: {
+          // from: collection name, the name is lowercase and plural
+          from: 'heros',
+          localField: '_id',
+          foreignField: 'categories',
+          as: 'heroList'
+        }
+      },
+      // 需要所有英雄，不需要限制
+      // {
+      //   $addFields: {
+      //     heroList: { $slice: ['$heroList', 5] }
+      //   }
+      // }
+    ]);
+    // 抽取出id新组一个数组，对应几个子分类的id
+    const subCats = cats.map(v => v._id);
+    cats.unshift({
+      // 热门不需要给id，不需要存数据库，它的数据来源是几个子分类
+      name: '热门',
+      heroList: await Hero.find().where({
+        categories: { $in: subCats }
+      }).limit(10).lean()
+    });
+    res.send(cats);
   });
 
   app.use('/web/api', router);

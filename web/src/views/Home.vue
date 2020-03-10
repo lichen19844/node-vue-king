@@ -73,7 +73,17 @@
       </template>
     </m-list-card>
 
-    <m-card icon="menu" title="英雄列表"></m-card>
+    <m-list-card icon="card-hero" title="英雄列表" :categories="heroCast">
+      <template #items="{category}">
+        <div class="d-flex flex-wrap">
+          <div class="py-2 text-center" v-for="(hero, i) in category.heroList" :key="i">
+            <img :src="hero.avator" alt />
+            <div>{{hero.name}}</div>
+          </div>
+        </div>
+      </template>
+    </m-list-card>
+
     <m-card icon="menu" title="精彩视频"></m-card>
     <m-card icon="menu" title="图文攻略"></m-card>
 
@@ -88,7 +98,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 export default {
   data() {
     return {
@@ -104,6 +114,7 @@ export default {
         }
       },
       newsCast: [],
+      heroCast: []
       // 废除预存假数据
       // newsCast: [
       //   {
@@ -124,7 +135,7 @@ export default {
       //       title: "1疫情期间全服不停机公告",
       //       date: "06/01"
       //     }))
-          
+
       //     // newsList: [
       //     //   {
       //     //     categoryName: '公告1',
@@ -190,17 +201,23 @@ export default {
   },
   methods: {
     async fetchNewsCast() {
-      const res = await this.$http.get('news/list')
+      const res = await this.$http.get("news/list");
       // res.data接收server端传过来的res.send数据
-      this.newsCast = res.data
+      this.newsCast = res.data;
+    },
+    async fetchHeroCast() {
+      const res = await this.$http.get("heros/list");
+      // res.data接收server端传过来的res.send数据
+      this.heroCast = res.data;
     }
   },
-  created () {
-    this.fetchNewsCast()
+  created() {
+    this.fetchNewsCast();
+    this.fetchHeroCast();
   },
   filters: {
     date(val) {
-      return dayjs(val).format('MM/DD')
+      return dayjs(val).format("MM/DD");
     }
   }
 };
