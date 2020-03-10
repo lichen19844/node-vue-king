@@ -12,6 +12,7 @@ console.log('http is ', http)
 
 // Add a request interceptor
 http.interceptors.request.use(config => {
+  console.log('拦截看看发送的啥 ', config)
   // Do something before request is sent
   if (localStorage.token) {
     config.headers.Authorization = 'Bearer '+ localStorage.token

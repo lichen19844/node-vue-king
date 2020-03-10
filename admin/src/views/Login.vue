@@ -9,7 +9,10 @@
           <el-input type="password" v-model="model.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" native-type="submit" :disabled="!isValid">登录</el-button>
+          <div style="display: flex; flex-flow: row nowrap;justify-content: space-between">
+            <el-button type="primary" native-type="submit" :disabled="!isValid">登录</el-button>
+            <router-link to="/register">还没有账户？去注册 ></router-link>
+          </div>
         </el-form-item>
       </el-form>
     </el-card>
@@ -35,6 +38,7 @@ export default {
       console.log('res is ', res)
       console.log('token is ', res.data.token)
       // sessionStorage.token = res.data.token
+      sessionStorage.username = this.model.username
       localStorage.token = res.data.token
       this.$router.push('/')
       this.$message({

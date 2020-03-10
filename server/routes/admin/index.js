@@ -102,6 +102,28 @@ module.exports = app => {
     res.send(file)
   })
 
+  // 注册逻辑
+  app.post('/admin/api/register', async (req, res, next) => {
+    // 注册
+    const model = await AdminUser.create(req.body)
+    console.log(model)
+    // 继续登录，返回token给前端
+    const { username, password } = req.body
+    const user = await AdminUser.findOne({
+      username: username
+    }).select('+password')
+    console.log('user info is, ', user)
+    assert(user, 422, '用户不存在')
+    const isValid = bcrypt.compareSync(password, user.password)
+    assert(isValid, 422, '密码不正确，请重新输入')
+    const token = jwt.sign({
+      id: String(user._id)
+      }, 
+      app.get('secret')
+    )
+    res.send({token})
+  })
+
   // 登录逻辑
   app.post('/admin/api/login', async (req, res, next) => {
     // res.send('ok')
@@ -144,7 +166,9 @@ module.exports = app => {
     // })
     const token = jwt.sign({
       id: String(user._id)
-      }, app.get('secret'))
+      }, 
+      app.get('secret')
+    )
     res.send({token})
   })
 
