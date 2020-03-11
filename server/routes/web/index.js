@@ -197,12 +197,16 @@ module.exports = app => {
     ]);
     // 抽取出id新组一个数组，对应几个子分类的id
     const subCats = cats.map(v => v._id);
+    const totalHeroList = await Hero.find().where({
+      categories: { $in: subCats }
+    }).populate('categories').lean()
+    const filterHeroList = totalHeroList.slice(0).sort((a, b) => Math.random() - 0.5)
+    // console.log('totalHeroList is ', Array.isArray(totalHeroList))
+    // console.log('filterHeroList is ', Array.isArray(filterHeroList), filterHeroList)
     cats.unshift({
       // 热门不需要给id，不需要存数据库，它的数据来源是几个子分类
       name: '热门',
-      heroList: await Hero.find().where({
-        categories: { $in: subCats }
-      }).limit(10).lean()
+      heroList: filterHeroList.slice(0, 10)
     });
     res.send(cats);
   });
