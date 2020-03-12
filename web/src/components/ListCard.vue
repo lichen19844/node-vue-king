@@ -13,7 +13,8 @@
         </div>
       </div>
       <div class="pt-3">
-        <swiper ref="list" @slide-change="() => active = this.$refs.list.swiper.realIndex">
+        <swiper ref="list" :options="{autoHeight: true}"
+          @slide-change="() => active = this.$refs.list.swiper.realIndex">
           <swiper-slide v-for="(category, i) in categories" :key="i">
             <!-- <div class="py-2" v-for="m in 5" :key="m">
             <span>[新闻]</span>

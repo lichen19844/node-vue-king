@@ -75,9 +75,11 @@
 
     <m-list-card icon="card-hero" title="英雄列表" :categories="heroCast">
       <template #items="{category}">
-        <div class="d-flex flex-wrap">
-          <div class="py-2 text-center" v-for="(hero, i) in category.heroList" :key="i">
-            <img :src="hero.avator" alt />
+        <div class="d-flex flex-wrap" style="margin:0 -0.5rem ">
+          <div class="p-2 text-center"
+             style="width: 20%"
+            v-for="(hero, i) in category.heroList" :key="i">
+            <img :src="hero.avator" class="w-100" />
             <div>{{hero.name}}</div>
           </div>
         </div>
@@ -207,7 +209,6 @@ export default {
     },
     async fetchHeroCast() {
       const res = await this.$http.get("heros/list");
-      // res.data接收server端传过来的res.send数据
       this.heroCast = res.data;
     }
   },

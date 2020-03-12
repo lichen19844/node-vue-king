@@ -188,12 +188,6 @@ module.exports = app => {
           as: 'heroList'
         }
       },
-      // 需要所有英雄，不需要限制
-      // {
-      //   $addFields: {
-      //     heroList: { $slice: ['$heroList', 5] }
-      //   }
-      // }
     ]);
     // 抽取出id新组一个数组，对应几个子分类的id
     const subCats = cats.map(v => v._id);
