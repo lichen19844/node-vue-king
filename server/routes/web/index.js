@@ -205,5 +205,15 @@ module.exports = app => {
     res.send(cats);
   });
 
+  // 文章详情
+  router.get('/articles/:id', async (req, res, next) => {
+    const data = await Article.findById(req.params.id).lean()
+    data.related = await Article.find({title: {$ne: data.title}}).where({
+      // 相同categories的数据
+      categories: {$in: data.categories}
+    }).limit(2)
+    res.send(data)
+  })
+
   app.use('/web/api', router);
 }

@@ -64,18 +64,19 @@
     <!-- 想要的结构 -->
     <m-list-card icon="menu" title="新闻资讯" :categories="newsCast">
       <template #items="{category}">
-        <div class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
+        <router-link tag="div"  :to="`/articles/${news._id}`" 
+          class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
           <span class="text-info">[{{news.categoryName}}]</span>
           <span class="px-1">|</span>
           <span class="flex-1 text-ellipsis text-dark-1 pr-2">{{news.title}}</span>
           <span class="fs-sm text-gray-1">{{news.createdAt | date}}</span>
-        </div>
+        </router-link>
       </template>
     </m-list-card>
 
     <m-list-card icon="card-hero" title="英雄列表" :categories="heroCast">
       <template #items="{category}">
-        <div class="d-flex flex-wrap" style="margin:0 -0.5rem ">
+        <div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
           <div class="p-2 text-center"
              style="width: 20%"
             v-for="(hero, i) in category.heroList" :key="i">
@@ -86,8 +87,8 @@
       </template>
     </m-list-card>
 
-    <m-card icon="menu" title="精彩视频"></m-card>
-    <m-card icon="menu" title="图文攻略"></m-card>
+    <m-card icon="video" title="精彩视频"></m-card>
+    <m-card icon="book" title="图文攻略"></m-card>
 
     <p>aaaa</p>
     <p>aaaa</p>

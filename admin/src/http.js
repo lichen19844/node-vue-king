@@ -4,7 +4,7 @@ import router from './router';
 
 // 创建一个实例，在里面模拟后台接口地址
 const http = axios.create({
-  baseURL: 'http://localhost:3000/admin/api'
+  baseURL: 'http://localhost:3000/admin/api/'
 })
 
 console.log('axios is ', axios)
