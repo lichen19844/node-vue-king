@@ -2,7 +2,7 @@
   <div class="about">
     <h1>{{id? '编辑': '新建'}}英雄</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
-      <el-tabs value="skills" type="border-card">
+      <el-tabs value="basic" type="border-card">
         <el-tab-pane label="基础信息" name="basic">
           <el-form-item label="名称" >
             <el-input placeholder="请输入内容" v-model="model.name"></el-input>
@@ -18,8 +18,21 @@
               :action="mixUploadUrl"
               :headers ="mixGetAuthHeaders()"
               :show-file-list="false"
-              :on-success="afterUpload">
+              :on-success="res => $set(model, 'avator', res.url)">
               <img v-if="model.avator" :src="model.avator" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="Banner" >
+            <!-- input随写随存入model -->
+            <!-- <el-input placeholder="请输入内容" v-model="model.icon"></el-input> -->
+            <el-upload
+              class="avatar-uploader"
+              :action="mixUploadUrl"
+              :headers ="mixGetAuthHeaders()"
+              :show-file-list="false"
+              :on-success="res => $set(model, 'banner', res.url)">
+              <img v-if="model.banner" :src="model.banner" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -133,11 +146,12 @@ export default {
     }
   },
   methods: {
-    afterUpload (res) {
-      console.log(res)
-      // this.$set(this.model, 'avator', res.url)
-      this.model.avator = res.url
-    },
+    // afterUpload (res) {
+    //   console.log(res)
+    //   // 通过后端拿到的url给前端
+    //   // this.$set(this.model, 'avator', res.url)
+    //   this.model.avator = res.url
+    // },
     async save() {
       let res
       if (this.id) {

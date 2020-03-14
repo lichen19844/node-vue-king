@@ -215,5 +215,10 @@ module.exports = app => {
     res.send(data)
   })
 
+  // 英雄详情
+  router.get('/heros/:id', async (req, res, next) => {
+    const data = await Hero.findById(req.params.id).lean()
+    res.send(data)
+  })
   app.use('/web/api', router);
 }

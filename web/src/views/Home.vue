@@ -77,12 +77,12 @@
     <m-list-card icon="card-hero" title="英雄列表" :categories="heroCast">
       <template #items="{category}">
         <div class="d-flex flex-wrap" style="margin: 0 -0.5rem">
-          <div class="p-2 text-center"
+          <router-link tag="div" :to="`/heros/${hero._id}`" class="p-2 text-center"
              style="width: 20%"
             v-for="(hero, i) in category.heroList" :key="i">
             <img :src="hero.avator" class="w-100" />
             <div>{{hero.name}}</div>
-          </div>
+          </router-link>
         </div>
       </template>
     </m-list-card>
