@@ -3,6 +3,7 @@
     <h1>{{id? '编辑': '新建'}}英雄</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-tabs value="basic" type="border-card">
+
         <el-tab-pane label="基础信息" name="basic">
           <el-form-item label="名称" >
             <el-input placeholder="请输入内容" v-model="model.name"></el-input>
@@ -82,6 +83,7 @@
             <el-input type="textarea" v-model="model.teamTips"></el-input>
           </el-form-item>
         </el-tab-pane>
+
         <el-tab-pane label="技能" name="skills">
           <el-button size="small" @click="model.skills.push({})">
             <i class="el-icon-plus"></i>添加技能
@@ -102,6 +104,12 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
               </el-form-item>
+              <el-form-item label="冷却值">
+                <el-input v-model="item.delay"></el-input>
+              </el-form-item>
+              <el-form-item label="消耗">
+                <el-input v-model="item.cost"></el-input>
+              </el-form-item>
               <el-form-item label="描述">
                 <el-input type="textarea" v-model="item.description"></el-input>
               </el-form-item>
@@ -117,7 +125,35 @@
             </el-col>
           </el-row>
         </el-tab-pane>
+
+        <el-tab-pane label="最佳搭档" name="partners">
+          <el-button size="small" @click="model.partners.push({})">
+            <i class="el-icon-plus"></i>添加英雄
+          </el-button>
+          <el-row type="flex" style="flex-wrap: wrap">
+            <el-col :md="12" v-for="(item, i) of model.partners" :key="i">
+              <el-form-item label="英雄">
+                <el-select placeholder="请选择" v-model="item.hero" filterable multiple style="width: 100%">
+                  <el-option
+                    v-for="hero of heros" :key="hero._id"
+                    :label="hero.name" :value="hero._id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="描述">
+               <el-input type="textarea" v-model="item.description"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="danger" size="small" 
+                  @click="model.partners.splice(i, 1)">
+                  删除
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
       </el-tabs>
+
       <el-form-item style="margin-top:1rem">
         <el-button type="primary" native-type="submit" round>保存</el-button>
       </el-form-item>
@@ -133,10 +169,12 @@ export default {
   data () {
     return {
       categories: [],
+      heros: [],
       items: [],
       model: {
         name: '',
         avator: '',
+        partners: [],
         categories: [],
         scores: {
           difficult: 0
@@ -161,7 +199,7 @@ export default {
         res = await this.$http.post('rest/heros', this.model)
         res
       }
-      this.$router.push('/heros/list')
+      // this.$router.push('/heros/list')
       this.$message({
         type: 'success',
         message: '保存成功'
@@ -179,12 +217,18 @@ export default {
     async fetchItems () {
       const res = await this.$http.get(`rest/items`)
       this.items = res.data
+    },
+    async fetchHeros () {
+      const res = await this.$http.get(`rest/heros`)
+      this.heros = res.data
+      console.log('heros is ', this.heros)
     }
   },
   created () {
     this.id && this.fetch()
     this.fetchCategories()
     this.fetchItems()
+    this.fetchHeros()
   }
 }
 </script>

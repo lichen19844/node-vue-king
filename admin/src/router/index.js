@@ -24,13 +24,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
-    meta: { isPublic : true }
+    meta: { isPublic: true }
   },
   {
     path: '/register',
     name: 'register',
     component: Register,
-    meta: { isPublic : true }
+    meta: { isPublic: true }
   },
   {
     path: '/',
@@ -39,31 +39,31 @@ const routes = [
     // component: Home
     component: Main,
     children: [
-      {path: '/categories/create', component: CategoryEdit},
+      { path: '/categories/create', component: CategoryEdit },
       // 能够将id传入组件页面中，组件通过props接受
-      {path: '/categories/edit/:id', component: CategoryEdit, props: true},
-      {path: 'categories/list', component: CategoryList},
-      
-      {path: '/items/create', component: ItemEdit},
-      {path: '/items/edit/:id', component: ItemEdit, props: true},
-      {path: 'items/list', component: ItemList},
+      { path: '/categories/edit/:id', component: CategoryEdit, props: true },
+      { path: 'categories/list', component: CategoryList },
 
-      {path: '/heros/create', component: HeroEdit},
-      {path: '/heros/edit/:id', component: HeroEdit, props: true},
-      {path: 'heros/list', component: HeroList},
+      { path: '/items/create', component: ItemEdit },
+      { path: '/items/edit/:id', component: ItemEdit, props: true },
+      { path: 'items/list', component: ItemList },
 
-      {path: '/articles/create', component: ArticleEdit},
-      {path: '/articles/edit/:id', component: ArticleEdit, props: true},
-      {path: 'articles/list', component: ArticleList},
+      { path: '/heros/create', component: HeroEdit },
+      { path: '/heros/edit/:id', component: HeroEdit, props: true },
+      { path: 'heros/list', component: HeroList },
 
-      {path: '/ads/create', component: AdEdit},
-      {path: '/ads/edit/:id', component: AdEdit, props: true},
-      {path: 'ads/list', component: AdList},
+      { path: '/articles/create', component: ArticleEdit },
+      { path: '/articles/edit/:id', component: ArticleEdit, props: true },
+      { path: 'articles/list', component: ArticleList },
 
-      {path: '/admin_users/create', component: AdminUserEdit},
-      {path: '/admin_users/edit/:id', component: AdminUserEdit, props: true},
-      {path: 'admin_users/list', component: AdminUserList}
-      
+      { path: '/ads/create', component: AdEdit },
+      { path: '/ads/edit/:id', component: AdEdit, props: true },
+      { path: 'ads/list', component: AdList },
+
+      { path: '/admin_users/create', component: AdminUserEdit },
+      { path: '/admin_users/edit/:id', component: AdminUserEdit, props: true },
+      { path: 'admin_users/list', component: AdminUserList }
+
     ]
   },
   {
@@ -72,19 +72,29 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import (
-      /* webpackChunkName: "about" */ 
+    component: () => import(
+      /* webpackChunkName: "about" */
       '../views/About.vue'
     )
   }
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+
+  // vue-router跳转后，页面置顶
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 // 导航守卫
 router.beforeEach((to, from, next) => {
+  // document.body.scrollTop = 0
   console.log('to.meta and to.path are ', to.meta, to.path)
   // 需要同时满足2个条件
   if (!to.meta.isPublic && !localStorage.token) {
@@ -92,5 +102,11 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+
+// // 跳转后返回顶部
+// router.afterEach((to, from, next) => {
+//   window.scrollTo(0,0);
+//   next()
+// })
 
 export default router

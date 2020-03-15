@@ -67,9 +67,12 @@ module.exports = app => {
       queryOptions.populate = 'parent'
       // queryOptions.populate = {path: 'parent'}
     }
+    if (req.Model.modelName === 'Hero') {
+      queryOptions.populate = 'categories'
+    }
     // const items = await req.Model.find().populate('parent').limit(10)
     // const items = await req.Model.find().populate({path: 'parent'}).limit(10)
-    const items = await req.Model.find().setOptions(queryOptions).limit(200)
+    const items = await req.Model.find().setOptions(queryOptions).limit(200).lean()
     console.log('queryOptions is ', queryOptions)
     console.log('lean is', req.Model.find().lean())
     res.send(items)
