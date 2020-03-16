@@ -167,7 +167,7 @@ module.exports = app => {
     res.send(
       // Hero.find()和test的数据基本结构是一样的
       await Hero.find()
-        .populate({path:'categories', populate:{path: 'parent'}})
+        .populate({ path: 'categories', populate: { path: 'parent' } })
     )
   });
 
@@ -208,16 +208,19 @@ module.exports = app => {
   // 文章详情
   router.get('/articles/:id', async (req, res, next) => {
     const data = await Article.findById(req.params.id).lean()
-    data.related = await Article.find({title: {$ne: data.title}}).where({
+    data.related = await Article.find({ title: { $ne: data.title } }).where({
       // 相同categories的数据
-      categories: {$in: data.categories}
+      categories: { $in: data.categories }
     }).limit(2)
     res.send(data)
   })
 
   // 英雄详情
   router.get('/heros/:id', async (req, res, next) => {
-    const data = await Hero.findById(req.params.id).lean()
+    const data = await Hero
+      .findById(req.params.id)
+      .populate('categories')
+      .lean()
     res.send(data)
   })
   app.use('/web/api', router);

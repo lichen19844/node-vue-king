@@ -136,7 +136,7 @@
                 <el-select placeholder="请选择" v-model="item.hero" filterable multiple style="width: 100%">
                   <el-option
                     v-for="hero of heros" :key="hero._id"
-                    :label="hero.name" :value="hero._id"
+                    :label="`${hero.categories.map(v => v.name).join('')}: ${hero.name}`" :value="hero._id"
                   ></el-option>
                 </el-select>
               </el-form-item>
