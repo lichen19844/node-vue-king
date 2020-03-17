@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="page-article" v-if="model">
+    <div class="page-article px-2" v-if="model">
       <div class="d-flex py-3 px-2 border-bottom">
         <div class="iconfont icon-back text-blue"></div>
         <strong class="flex-1 text-blue pl-2">{{model.title}}</strong>

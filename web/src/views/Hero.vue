@@ -28,10 +28,110 @@
             <span>生存</span>
             <span class="badge bg-dark">{{model.scores.survive}}</span>
           </div>
-          <router-link to="/" tag="span" class="text-gray fs-sm">
-            皮肤: 2 &gt;
-          </router-link>
+          <router-link to="/" tag="span" class="text-gray fs-sm">皮肤: 2 &gt;</router-link>
         </div>
+      </div>
+    </div>
+    <!-- end of top -->
+    <div>
+      <div class="bg-white px-3">
+        <div class="nav d-flex jc-around pt-3 pb-2 border-bottom">
+          <div class="nav-item active">
+            <div class="nav-link">英雄初识</div>
+          </div>
+
+          <div class="nav-item">
+            <div class="nav-link">进阶攻略</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <swiper>
+          <swiper-slide>
+            <div>
+              <div class="p-3 bg-white border-bottom">
+                <div class="d-flex ai-center">
+                  <router-link tag="button" to="/" class="btn btn-lg flex-1">
+                    <i class="iconfont icon-video"></i>
+                    英雄介绍视频
+                  </router-link>
+                  <router-link tag="button" to="/" class="btn btn-lg flex-1 ml-2">
+                    <i class="iconfont icon-card-hero"></i>
+                    一图识英雄
+                  </router-link>
+                </div>
+                <!-- skills -->
+                <div class="skills bg-white mt-4">
+                  <div class="d-flex jc-around">
+                    <img v-for="(item, i) of model.skills"
+                      :key="item._id"
+                      :src="item.icon"
+                      width="65" height="65"
+                      class="icon"
+                      :class="{active: currentSkillIndex === i}"
+                      @click="currentSkillIndex = i"
+                    />
+                  </div>
+                  <div v-if="currentSkill">
+                    <div class="d-flex ai-center">
+                      <h3>{{currentSkill.name}}</h3>
+                      <span class="text-gray-1 ml-4 fs-sm">
+                        (冷却值:{{currentSkill.delay}}
+                        消耗:{{currentSkill.cost}})
+                      </span>
+                    </div>
+                    <p style="margin-top:0.5rem">{{currentSkill.description}}</p>
+                    <div class="border-bottom"></div>
+                    <p class="text-gray">小提示: {{currentSkill.tips}}</p>
+                  </div>
+                </div>
+              </div>
+
+              <m-card icon="say" title="出装推荐" class="hero-items">
+                <div class="fs-xl">顺风出装</div>
+                <div class="d-flex jc-around text-center mt-3">
+                  <div v-for="item of model.items1"
+                   :key="item._id"
+                  >
+                    <img :src="item.icon" class="icon" />
+                    <div class="fs-xs">{{item.name}}</div>
+                  </div>
+                </div>
+                <div class="border-bottom"></div>
+                <div class="fs-xl mt-3">逆风出装</div>
+                <div class="d-flex jc-around text-center mt-3">
+                  <div v-for="item of model.items2"
+                   :key="item._id"
+                  >
+                    <img :src="item.icon" class="icon" />
+                    <div class="fs-xs">{{item.name}}</div>
+                  </div>
+                </div>
+              </m-card>
+              <m-card icon="say" title="使用技巧">
+                <p class="m-0">{{model.usageTips}}</p>
+              </m-card>
+              <m-card icon="say" title="对抗技巧">
+                <p class="m-0">{{model.battleTips}}</p>
+              </m-card>
+              <m-card icon="say" title="团战思路">
+                <p class="m-0">{{model.teamTips}}</p>
+              </m-card>
+              <m-card icon="say" title="英雄关系">
+                <div class="fs-xl">最佳搭档</div>
+                <div class="d-flex ai-center pt-3"
+                  v-for="item of model.partners"
+                  :key="item.name">
+                  <img :src="item.hero[0].avator" width="50" />
+                  <p class="flex-1 ml-3">{{item.description}}</p>
+                </div>
+                <div class="border-bottom mt-3"></div>
+              </m-card>
+            </div>
+          </swiper-slide>
+
+          <swiper-slide></swiper-slide>
+        </swiper>
       </div>
     </div>
   </div>
@@ -44,8 +144,14 @@ export default {
   },
   data() {
     return {
-      model: null
+      model: null,
+      currentSkillIndex: 0
     };
+  },
+  computed: {
+    currentSkill () {
+      return this.model.skills[this.currentSkillIndex]
+    }
   },
   methods: {
     async fetchHero() {
@@ -65,22 +171,30 @@ export default {
     height: 50vw;
     background: #fff no-repeat top center;
     background-size: auto 100%;
-  }
-  .info {
-    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-    .scores {
-      .badge {
-        margin: 0 0.5rem;
-        display: inline-block;
-        width: 1rem;
-        height: 1rem;
-        line-height: 0.9rem;
-        text-align: center;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 0.6rem;
+    .info {
+      background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+      .scores {
+        .badge {
+          margin: 0 0.5rem;
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          line-height: 0.9rem;
+          text-align: center;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          font-size: 0.6rem;
+        }
       }
     }
   }
+  .hero-items {
+    img.icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+  
 }
 </style>

@@ -48,7 +48,7 @@ module.exports = app => {
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
     // res.send(model)
     model
-    res.send('model')
+    res.send(model)
   })
 
   // 删除资源

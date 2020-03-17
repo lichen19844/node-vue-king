@@ -142,7 +142,23 @@ p {
   border-radius: 0.1538rem;
   font-size: map-get($font-sizes, 'sm') * $base-font-size;
   -webkit-font-smoothing: antialiased;
-  padding: 0.4rem 0.6rem
+  padding: 0.4rem 0.6rem;
+  &.btn-lg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      color: map-get($colors, 'primary');
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-right: 0.5rem
+    }
+    background: map-get($colors, 'white-1');
+    border: 1px solid map-get($colors, 'white-2');
+    border-radius: 0.5rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
 };
 
 // nav
@@ -164,6 +180,15 @@ p {
         border-bottom-color: map-get($colors, 'white');
       };
     };
+  };
+};
+
+// nav
+.icon {
+  border: 2px solid map-get($colors, 'white');
+  &.active {
+    border-color: map-get($colors, 'primary');
+    border-radius: 45%;
   };
 };
 

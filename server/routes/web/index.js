@@ -219,7 +219,8 @@ module.exports = app => {
   router.get('/heros/:id', async (req, res, next) => {
     const data = await Hero
       .findById(req.params.id)
-      .populate('categories')
+      // .populate('categories').populate('items1').populate('items2')
+      .populate('categories items1 items2 partners.hero')
       .lean()
     res.send(data)
   })

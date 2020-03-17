@@ -194,10 +194,10 @@ export default {
       let res
       if (this.id) {
         res = await this.$http.put(`rest/heros/${this.id}`, this.model)
-        res
+        console.log('put res is ', res)
       } else {
         res = await this.$http.post('rest/heros', this.model)
-        res
+        console.log('post res is ', res)
       }
       // this.$router.push('/heros/list')
       this.$message({
