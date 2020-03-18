@@ -16,8 +16,10 @@ app.use(require('cors')())
 // 加上处理接收(json)数据req.body 所需的express中间件
 app.use(express.json())
 
-// 托管静态文件，让uploads里的所有文件可以通过/uploads来访问
+// 托管静态文件，让当前文件index.js所在目录server下uploads文件夹里的所有文件可以通过路径/uploads来访问
 app.use('/uploads', express.static(__dirname + '/uploads'))
+// 托管静态文件，让当前文件index.js所在目录server下admin文件夹里的所有文件可以通过路径/admin来访问
+app.use('/admin', express.static(__dirname + '/admin'))
 
 // 子路由功能，引用过来是个函数，需要执行
 require('./routes/admin')(app)
