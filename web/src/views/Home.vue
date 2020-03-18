@@ -250,11 +250,4 @@ export default {
     }
   }
 }
-
-.long-border {
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: map-get($colors, "light-1");
-}
 </style>

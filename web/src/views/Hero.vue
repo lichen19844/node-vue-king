@@ -63,10 +63,12 @@
                 <!-- skills -->
                 <div class="skills bg-white mt-4">
                   <div class="d-flex jc-around">
-                    <img v-for="(item, i) of model.skills"
+                    <img
+                      v-for="(item, i) of model.skills"
                       :key="item._id"
                       :src="item.icon"
-                      width="65" height="65"
+                      width="65"
+                      height="65"
                       class="icon"
                       :class="{active: currentSkillIndex === i}"
                       @click="currentSkillIndex = i"
@@ -87,12 +89,10 @@
                 </div>
               </div>
 
-              <m-card icon="say" title="出装推荐" class="hero-items">
+              <m-card plain icon="say" title="出装推荐" class="hero-items">
                 <div class="fs-xl">顺风出装</div>
                 <div class="d-flex jc-around text-center mt-3">
-                  <div v-for="item of model.items1"
-                   :key="item._id"
-                  >
+                  <div v-for="item of model.items1" :key="item._id">
                     <img :src="item.icon" class="icon" />
                     <div class="fs-xs">{{item.name}}</div>
                   </div>
@@ -100,28 +100,24 @@
                 <div class="border-bottom"></div>
                 <div class="fs-xl mt-3">逆风出装</div>
                 <div class="d-flex jc-around text-center mt-3">
-                  <div v-for="item of model.items2"
-                   :key="item._id"
-                  >
+                  <div v-for="item of model.items2" :key="item._id">
                     <img :src="item.icon" class="icon" />
                     <div class="fs-xs">{{item.name}}</div>
                   </div>
                 </div>
               </m-card>
-              <m-card icon="say" title="使用技巧">
+              <m-card plain icon="say" title="使用技巧">
                 <p class="m-0">{{model.usageTips}}</p>
               </m-card>
-              <m-card icon="say" title="对抗技巧">
+              <m-card plain icon="say" title="对抗技巧">
                 <p class="m-0">{{model.battleTips}}</p>
               </m-card>
-              <m-card icon="say" title="团战思路">
+              <m-card plain icon="say" title="团战思路">
                 <p class="m-0">{{model.teamTips}}</p>
               </m-card>
-              <m-card icon="say" title="英雄关系">
+              <m-card plain icon="say" title="英雄关系">
                 <div class="fs-xl">最佳搭档</div>
-                <div class="d-flex ai-center pt-3"
-                  v-for="item of model.partners"
-                  :key="item.name">
+                <div class="d-flex ai-center pt-3" v-for="item of model.partners" :key="item.name">
                   <img :src="item.hero[0].avator" width="50" />
                   <p class="flex-1 ml-3">{{item.description}}</p>
                 </div>
@@ -149,8 +145,8 @@ export default {
     };
   },
   computed: {
-    currentSkill () {
-      return this.model.skills[this.currentSkillIndex]
+    currentSkill() {
+      return this.model.skills[this.currentSkillIndex];
     }
   },
   methods: {
@@ -195,6 +191,5 @@ export default {
       border-radius: 50%;
     }
   }
-  
 }
 </style>
