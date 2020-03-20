@@ -93,6 +93,7 @@ module.exports = app => {
     router
   )
 
+  // multer能够处理获取的上传文件，以便express获取上传数据做进一步处理
   const multer = require('multer')
   // 定义中间件upload
   const upload = multer({dest: __dirname + '/../../uploads'})
