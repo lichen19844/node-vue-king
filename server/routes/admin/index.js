@@ -102,7 +102,8 @@ module.exports = app => {
     const file = req.file
     console.log('file is ', file)
     // 前端无法直接访问后端，后端可以将某些资源处理成静态文件供前端访问
-    file.url = `http://localhost:3000/uploads/${file.filename}`
+    // file.url = `http://localhost:3000/uploads/${file.filename}`
+    file.url = `http://blog.lichen.pro/uploads/${file.filename}`
     res.send(file)
   })
 
