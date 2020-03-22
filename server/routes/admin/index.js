@@ -10,7 +10,7 @@ module.exports = app => {
   const assert = require('http-assert')
   // const ok = require('assert')
   const AdminUser = require('../../models/AdminUser')
-  
+
   // 登录校验中间件
   const authMiddleware = require('../../middleware/auth')
   // 资源中间件
@@ -83,27 +83,43 @@ module.exports = app => {
     const model = await req.Model.findById(req.params.id)
     res.send(model)
     console.log('res.statusCode is ', res.statusCode)
-  })  
+  })
 
   // app.use是这个文件中第一个执行的方法，先匹配路径，再执行后面的中间件，再执行next即router
   app.use(
-    '/admin/api/rest/:resource', 
-    authMiddleware(), 
-    resourceMiddleware(), 
+    '/admin/api/rest/:resource',
+    authMiddleware(),
+    resourceMiddleware(),
     router
   )
 
   // multer能够处理获取的上传文件，以便express获取上传数据做进一步处理
   const multer = require('multer')
+  const MAO = require('multer-aliyun-oss');
+
   // 定义中间件upload
-  const upload = multer({dest: __dirname + '/../../uploads'})
+  const upload = multer({
+    // 项目所在文件夹
+    // dest: __dirname + '/../../uploads',
+
+    // 阿里云OSS云存储
+    storage: MAO({
+      config: {
+        region: 'oss-cn-hongkong',
+        accessKeyId: 'LTAI4FvEU3mcHYkR9fT9iDk7',
+        accessKeySecret: 'rII2AXbs47gxg8ZySSzHJ3rsfmtBho',
+        bucket: 'node-vue-king'
+      }
+    })
+  })
   // express本身是获取不到上传数据的，所以需要使用一个中间件来处理获取上传文件
   app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res, next) => {
+    // 通过阿里云OSS直接拿到的就是一段url内容
     const file = req.file
     console.log('file is ', file)
     // 前端无法直接访问后端，后端可以将某些资源处理成静态文件供前端访问
     // file.url = `http://localhost:3000/uploads/${file.filename}`
-    file.url = `http://blog.lichen.pro/uploads/${file.filename}`
+    // file.url = `http://blog.lichen.pro/uploads/${file.filename}`
     res.send(file)
   })
 
@@ -123,10 +139,10 @@ module.exports = app => {
     assert(isValid, 422, '密码不正确，请重新输入')
     const token = jwt.sign({
       id: String(user._id)
-      }, 
+    },
       app.get('secret')
     )
-    res.send({token})
+    res.send({ token })
   })
 
   // 登录逻辑
@@ -171,10 +187,10 @@ module.exports = app => {
     // })
     const token = jwt.sign({
       id: String(user._id)
-      }, 
+    },
       app.get('secret')
     )
-    res.send({token})
+    res.send({ token })
   })
 
   // 处理错误模块
