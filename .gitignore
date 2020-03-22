@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 /dist
-web/src/assets
-server/uploads
+# web/src/assets
+# server/uploads
 
 # local env files
 .env.local
