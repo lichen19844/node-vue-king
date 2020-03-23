@@ -19,7 +19,7 @@ Vue.mixin({
   computed: {
     mixUploadUrl () {
       // 返回一个请求地址（string）给组件ul-upload的属性action做进一步处理
-      // baseURL是localhost:3000/admin/api/
+      // baseURL是localhost:3000/admin/api
       console.log('this.$http.defaults.baseURL ', this.$http.defaults.baseURL)
       return this.$http.defaults.baseURL + '/upload'
     }
