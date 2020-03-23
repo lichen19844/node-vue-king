@@ -42,7 +42,8 @@ export default {
         message: "注册成功，等待跳转登录：）"
       });
       setTimeout(() => {
-        sessionStorage.username = this.model.username
+        // sessionStorage.username = this.model.username
+        localStorage.username = this.model.username
         localStorage.token = res.data.token;
         this.$router.push("/");
         this.$message({

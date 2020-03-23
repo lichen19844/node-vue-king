@@ -114,7 +114,8 @@ export default {
     }
   },
   created() {
-    this.username = sessionStorage.username;
+    // this.username = sessionStorage.username;
+    this.username = localStorage.username;
   },
   updated() {
     let scrTop = document.getElementById("scrTop");

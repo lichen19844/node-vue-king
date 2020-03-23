@@ -38,7 +38,8 @@ export default {
       console.log('res is ', res)
       console.log('token is ', res.data.token)
       // sessionStorage.token = res.data.token
-      sessionStorage.username = this.model.username
+      // sessionStorage.username = this.model.username
+      localStorage.username = this.model.username
       localStorage.token = res.data.token
       this.$router.push('/')
       this.$message({
