@@ -114,7 +114,7 @@ module.exports = app => {
   })
   // express本身是获取不到上传数据的，所以需要使用一个中间件来处理获取上传文件
   app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res, next) => {
-    // 通过阿里云OSS直接拿到的就是一段url内容
+    // 通过阿里云OSS直接拿到的file对象中直接有url，在前端调取返回的file.url即可，前端亦称res.url
     const file = req.file
     console.log('file is ', file)
     // 前端无法直接访问后端，后端可以将某些资源处理成静态文件供前端访问
