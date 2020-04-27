@@ -1,6 +1,7 @@
 <template>
   <div>
     <m-card :icon="icon" :title="title">
+      <!-- 资源细分的分类 -->
       <div class="nav jc-between">
         <div
           class="nav-item"
@@ -12,6 +13,7 @@
           <div class="nav-link">{{category.name}}</div>
         </div>
       </div>
+      <!-- 左右滑动区域 -->
       <div class="pt-3">
         <swiper ref="list" :options="{autoHeight: true}"
           @slide-change="() => active = this.$refs.list.swiper.realIndex">

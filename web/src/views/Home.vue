@@ -63,6 +63,7 @@
 
     <!-- 想要的结构 -->
     <m-list-card icon="menu" title="新闻资讯" :categories="newsCast">
+      <!-- 需要操控的数据 -->
       <template #items="{category}">
         <router-link tag="div"  :to="`/articles/${news._id}`" 
           class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
@@ -87,16 +88,31 @@
       </template>
     </m-list-card>
 
-    <m-card icon="video" title="精彩视频"></m-card>
-    <m-card icon="book" title="图文攻略"></m-card>
+    <m-list-card icon="video" title="精彩视频" :categories="newsCast">
+      <!-- 需要操控的数据 -->
+      <template #items="{category}">
+        <router-link tag="div"  :to="`/articles/${news._id}`" 
+          class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
+          <span class="text-info">[{{news.categoryName}}]</span>
+          <span class="px-1">|</span>
+          <span class="flex-1 text-ellipsis text-dark-1 pr-2">{{news.title}}</span>
+          <span class="fs-sm text-gray-1">{{news.createdAt | date}}</span>
+        </router-link>
+      </template>
+    </m-list-card>
 
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
-    <p>aaaa</p>
+    <m-list-card icon="book" title="图文攻略" :categories="newsCast">
+      <!-- 需要操控的数据 -->
+      <template #items="{category}">
+        <router-link tag="div"  :to="`/articles/${news._id}`" 
+          class="py-2 fs-lg d-flex" v-for="(news, i) in category.newsList" :key="i">
+          <span class="text-info">[{{news.categoryName}}]</span>
+          <span class="px-1">|</span>
+          <span class="flex-1 text-ellipsis text-dark-1 pr-2">{{news.title}}</span>
+          <span class="fs-sm text-gray-1">{{news.createdAt | date}}</span>
+        </router-link>
+      </template>
+    </m-list-card>
   </div>
 </template>
 
