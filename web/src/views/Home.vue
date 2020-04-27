@@ -16,9 +16,9 @@
 
     <div class="nav-icons bg-white mt-3 text-center pt-3 text-gray-1">
       <div class="d-flex flex-wrap">
-        <div class="nav-item mb-3" v-for="item in 10" :key="item">
-          <i class="sprite sprite-news"></i>
-          <div class="py-2">爆料站</div>
+        <div class="nav-item mb-3" v-for="(item, index) of navIcons" :key="index">
+          <i :class="`sprite ${item.icon}`"></i>
+          <div class="py-2">{{item.navName}}</div>
         </div>
       </div>
       <div class="bg-light py-2 fs-sm d-flex jc-center">
@@ -105,6 +105,21 @@ import dayjs from "dayjs";
 export default {
   data() {
     return {
+      navIcons: [
+        {icon: 'sprite-news', navName: '爆料站'},
+        {icon: 'sprite-story', navName: '故事站'},
+        {icon: 'sprite-mall', navName: '周边商城'},
+        {icon: 'sprite-experience', navName: '体验服'},
+        {icon: 'sprite-rookie', navName: '新人专区'},
+        {icon: 'sprite-honor', navName: '荣耀传承'},
+        {icon: 'sprite-sandbox', navName: '模拟战资料库'},
+        {icon: 'sprite-campsite', navName: '王者营地'},
+        {icon: 'sprite-officalAccounts', navName: '公众号'},
+        {icon: 'sprite-version', navName: '版本介绍'},
+        {icon: 'sprite-environment', navName: '对局环境'},
+        {icon: 'sprite-team', navName: '无限王者团'},
+        {icon: 'sprite-idea', navName: '创意互动营'}
+      ],
       swiperOption: {
         pagination: {
           el: ".pagination-home",
