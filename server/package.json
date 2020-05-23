@@ -14,6 +14,7 @@
     "assert": "^2.0.0",
     "bcrypt": "^3.0.8",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^5.0.0-alpha.7",
     "http-assert": "^1.4.1",
     "inflection": "^1.12.0",

@@ -1,3 +1,7 @@
+let dotenv = require('dotenv');
+
+dotenv.config('./env');
+
 const express = require('express')
 
 const app = express()
@@ -22,12 +26,12 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use('/admin', express.static(__dirname + '/admin'))
 app.use('/', express.static(__dirname + '/web'))
 
+// 数据库功能，app这个参数暂时传入进去没用
+require('./plugins/db')(app)
+
 // 子路由功能，引用过来是个函数，需要执行
 require('./routes/admin')(app)
 require('./routes/web')(app)
-
-// 数据库功能，app这个参数暂时传入进去没用
-require('./plugins/db')(app)
 
 // app.listen方法启动监听一个3000端口，同时传入一个回调函数，启动成功之后会调用后面的回调函数参数
 app.listen(3000, () => {

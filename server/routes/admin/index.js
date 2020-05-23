@@ -105,10 +105,10 @@ module.exports = app => {
     // 阿里云OSS云存储
     storage: MAO({
       config: {
-        region: 'oss-cn-hongkong',
-        accessKeyId: 'xxx已匿去',
-        accessKeySecret: 'xxx已匿去',
-        bucket: 'node-vue-king'
+        region: process.env.OSS_REGION,
+        accessKeyId: process.env.OSS_ACCESS_KEY_ID,
+        accessKeySecret: process.env.OSS_ACCESS_KEY_SECRET,
+        bucket: process.env.OSS_BUCKET
       }
     })
   })
