@@ -2,20 +2,29 @@
   <div>
     <h1>分类列表</h1>
     <!-- items的子项是item，每个item有_id, parent, name -->
-    <el-table :data="items">
+    <el-table
+      :data="items"
+      border
+      stripe
+      :header-cell-style="rowClass"
+      :cell-style="cellStyle"
+    >
       <el-table-column prop="_id" label="ID" width="230px"></el-table-column>
       <!-- <el-table-column prop="parent" label="上级分类"></el-table-column> -->
       <el-table-column prop="parent.name" label="上级分类"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="180">
-        
+      <el-table-column fixed="right" label="操作" width="180">
         <template v-slot="scope">
           <!-- {{scope.row}} -->
-          <el-button type="text" size="small" @click="$router.push(`/categories/edit/${scope.row._id}`)">编辑</el-button>
-          <el-button type="text" size="small" @click="remove(scope.row)">删除</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="$router.push(`/categories/edit/${scope.row._id}`)"
+            >编辑</el-button
+          >
+          <el-button type="text" size="small" @click="remove(scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -24,41 +33,49 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      items: []
-    }
+      items: [],
+    };
   },
   methods: {
-    async fetch () {
-      const res = await this.$http.get('rest/categories')
-      this.items = res.data
-      console.log('this.items is ', this.items)
+    async fetch() {
+      const res = await this.$http.get("rest/categories");
+      this.items = res.data;
+      console.log("this.items is ", this.items);
     },
-    async remove (row) {
+    async remove(row) {
       // $confirm 是element提供的
-      await this.$confirm(`是否确定要删除分类？"${row.name}"`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const res = await this.$http.delete(`rest/categories/${row._id}`)
-        res
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+      await this.$confirm(`是否确定要删除分类？"${row.name}"`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const res = await this.$http.delete(`rest/categories/${row._id}`);
+          res;
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          this.fetch(); // 刷新页面
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
-        this.fetch(); // 刷新页面
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });          
-      });
+    },
+    rowClass() {
+      return "background: #cccccc; text-align: center; color: #000000; font-weight: 600;";
+    },
+    cellStyle() {
+      return "background: #ffffff; text-align: center;";
     }
   },
-  created () {
-    this.fetch()
-  }
-}
+  created() {
+    this.fetch();
+  },
+};
 </script>

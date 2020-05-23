@@ -84,6 +84,7 @@ export default {
     async fetchParents() {
       const res = await this.$http.get(`rest/categories`);
       // this.parents = res.data
+      // 上级分类不会出现子分类的方法，即没有设置上级分类的分类即为上级分类
       for (var i = 0; i < res.data.length; i++) {
         if (!res.data[i].parent) {
           this.parents.push(res.data[i]);

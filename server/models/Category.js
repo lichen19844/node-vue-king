@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('./Category')
 
 const schema = new mongoose.Schema({
   name: { type: String, unique: true },

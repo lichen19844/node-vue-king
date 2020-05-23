@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('./Category')
 
 const schema = new mongoose.Schema({
   categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],

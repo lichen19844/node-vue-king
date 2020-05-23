@@ -2,7 +2,11 @@
   <div>
     <h1>文章列表</h1>
     <!-- items的子项是item，每个item有_id, parent, name -->
-    <el-table :data="items">
+    <el-table :data="items"
+    border
+      stripe
+      :header-cell-style="rowClass"
+      :cell-style="cellStyle">
       <el-table-column prop="_id" label="ID" width="230px"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column
@@ -53,6 +57,12 @@ export default {
           message: '已取消删除'
         });          
       });
+    },
+    rowClass() {
+      return "background: #cccccc; text-align: center; color: #000000; font-weight: 600;";
+    },
+    cellStyle() {
+      return "background: #ffffff; text-align: center;";
     }
   },
   created () {

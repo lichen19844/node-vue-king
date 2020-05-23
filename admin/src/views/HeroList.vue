@@ -1,7 +1,11 @@
 <template>
   <div>
     <h1>英雄列表</h1>
-    <el-table :data="items">
+    <el-table :data="items"
+    border
+      stripe
+      :header-cell-style="rowClass"
+      :cell-style="cellStyle">
       <el-table-column prop="_id" label="ID" width="230px"></el-table-column>
       <!-- <el-table-column prop="parent" label="上级分类"></el-table-column> -->
       <!-- <el-table-column prop="parent.name" label="上级分类"></el-table-column> -->
@@ -60,6 +64,12 @@ export default {
           message: '已取消删除'
         });          
       });
+    },
+    rowClass() {
+      return "background: #cccccc; text-align: center; color: #000000; font-weight: 600;";
+    },
+    cellStyle() {
+      return "background: #ffffff; text-align: center;";
     }
   },
   created () {
