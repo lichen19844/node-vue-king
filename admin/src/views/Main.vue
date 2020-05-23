@@ -3,9 +3,9 @@
   <el-container style="height: 100vh">
     <el-aside width="220px" style="background-color: rgb(238, 241, 246)">
       <el-menu
-        router
-        :default-openeds="['1']"
-        unique-opened
+        :router=true
+        :default-openeds="openeds"
+        :unique-opened="uniqueOpened" 
         :default-active="$route.path"
         active-text-color="#ffd04b"
         text-color="#fff"
@@ -116,6 +116,8 @@ export default {
     return {
       username: "",
       tableData: Array(20).fill(item),
+      openeds: ['2'],
+      uniqueOpened: true,
       // handleShow: false
       menu: {
         items: [
