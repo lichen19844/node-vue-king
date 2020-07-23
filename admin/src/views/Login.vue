@@ -41,12 +41,21 @@ export default {
       // sessionStorage.username = this.model.username
       localStorage.username = this.model.username
       localStorage.token = res.data.token
-      this.$router.push('/')
-      this.$message({
-        type: 'success',
-        message: '登录成功'
-      })
+      if (res.status === 200) {
+        this.$router.push('/')
+        this.$message({
+          type: 'success',
+          message: '登录成功'
+        })
+      }
+      // else {
+      //     this.$message({
+      //     type: 'error',
+      //     message: '登录异常'
+      //   })
+      // }
     },
+
     async initLogin () {
       localStorage.clear()
     }
